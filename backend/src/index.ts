@@ -1,9 +1,10 @@
-import { Hono } from 'hono'
 
-const app = new Hono()
+import { Hono } from 'hono';
+import { user } from '../routes/';  // Import user router
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+const app = new Hono();
 
-export default app
+// Mount user routes under '/api/v1'
+app.route('/api/v1', user);
+
+export default app;  // Export the main app instance

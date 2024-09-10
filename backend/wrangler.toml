@@ -2,8 +2,13 @@ name = "my-app"
 compatibility_date = "2024-09-09"
 # compatibility_flags = [ "nodejs_compat" ]
 
-# [vars]
-# MY_VAR = "my-variable"
+[vars]
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiMjdmODI2YmEtYTY3MS00MTg2LTgwMzQtZGZjYTAzY2NkNzQ1IiwidGVuYW50X2lkIjoiOGRiZDVjNTljZDg4MWRhMWUwZTcyMzdhMGFmYmU1MTYzMmJmYTA3OGQ0Yzg0NTQ2YjE2ZjZjM2I4ZWQ4ZmFjYyIsImludGVybmFsX3NlY3JldCI6IjkyNTRjYzM3LTJlOTktNGIzNy1iYzdiLWNkNjJkNTE4NzVjNCJ9.A8snHm6itfIY6CZiHFF74nykNuTVn8cNBkVjCFJwKqQ"
+
+
+
+
+
 
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
