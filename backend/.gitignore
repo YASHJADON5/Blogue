@@ -15,10 +15,14 @@ dist/
 node_modules/
 .wrangler
 
+wrangler.toml
+
+
 # env
 .env
 .env.production
 .dev.vars
+
 
 # logs
 logs/
@@ -31,4 +35,3 @@ lerna-debug.log*
 
 # misc
 .DS_Store
-

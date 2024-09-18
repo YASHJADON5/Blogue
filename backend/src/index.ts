@@ -1,10 +1,17 @@
 
 import { Hono } from 'hono';
 import { user } from '../routes/';  // Import user router
+import {authMiddleware} from '../middlewares/authMiddleware'
 
-const app = new Hono();
+const app = new Hono<{
+   Bindings:{
+    JWT_KEY:string
+   }
+}>();
 
-// Mount user routes under '/api/v1'
+app.use('/api/v1/blog/*',authMiddleware);
+
+
 app.route('/api/v1', user);
 
-export default app;  // Export the main app instance
+export default app;
