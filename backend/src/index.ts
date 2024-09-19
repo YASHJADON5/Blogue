@@ -1,7 +1,8 @@
 
 import { Hono } from 'hono';
-import { user } from '../routes/';  // Import user router
-import {authMiddleware} from '../middlewares/authMiddleware'
+import { user } from '../routes/user'; 
+import { blog } from '../routes/blog'
+// import {authMiddleware} from '../middlewares/authMiddleware'
 
 const app = new Hono<{
    Bindings:{
@@ -9,9 +10,10 @@ const app = new Hono<{
    }
 }>();
 
-app.use('/api/v1/blog/*',authMiddleware);
+// app.use('/api/v1/blog/*',authMiddleware);
 
 
 app.route('/api/v1', user);
+app.route('/api/v1', blog);
 
 export default app;
