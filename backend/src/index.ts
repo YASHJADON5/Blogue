@@ -2,7 +2,7 @@
 import { Hono } from 'hono';
 import { user } from '../routes/user'; 
 import { blog } from '../routes/blog'
-// import {authMiddleware} from '../middlewares/authMiddleware'
+import { cors } from 'hono/cors'
 
 const app = new Hono<{
    Bindings:{
@@ -10,9 +10,8 @@ const app = new Hono<{
    }
 }>();
 
-// app.use('/api/v1/blog/*',authMiddleware);
 
-
+app.use('/*',cors());
 app.route('/api/v1', user);
 app.route('/api/v1', blog);
 

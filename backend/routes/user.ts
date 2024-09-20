@@ -26,9 +26,12 @@ user.post('/user/signup', async(c) => {
             msg:"signup body is missing"
         })
     }
+    console.log(body);
     const {success}= signUpBody.safeParse(body)
     if(!success){
+        c.status(411)
         return c.json({
+
             msg:" body parsing failed"
         })
     }
