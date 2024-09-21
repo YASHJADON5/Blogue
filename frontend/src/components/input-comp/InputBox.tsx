@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from 'react'
 
-
 interface labelledType{
     label:string,
     placeholder:string,
