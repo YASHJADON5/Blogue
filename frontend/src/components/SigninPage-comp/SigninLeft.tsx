@@ -1,33 +1,24 @@
-import React, { useState } from 'react'
+import React,{useState} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
-import {signUpInputType,signUpBody} from 'blogue-common'
+import {signInInputType,signInBody} from 'blogue-common'
 import InputBox from '../SigninAnsSignupShared/input-comp/InputBox'
 import axios from 'axios';
-
 const base_url = import.meta.env.VITE_BASE_URL;
 
-type SignupLeftProps = {
-  setLoading: (value: boolean) => void;
-};
 
-
-
-function SignupLeft({setLoading}:SignupLeftProps) {
-     const navigate=useNavigate()
+function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
+    const navigate=useNavigate()
     const [showError,setShowError]=useState({
-      showNameError:true,
       showEmailError:true,
       showPasswordError:true
     });
     
     // const [loading,setLoading]=useState(false);
-    const [signUpInputs,setsignUpInputs]= useState<signUpInputType>({
-      name:'',
+    const [signInInputs,setsignInInputs]= useState<signInInputType>({
       email:'',
       password:''
     })
     const [error,setErrors] =useState({
-         nameError:'',
          emailError:'',
          passwordError:''       
     })
@@ -36,22 +27,12 @@ function SignupLeft({setLoading}:SignupLeftProps) {
       setShowError((prev)=>{
             return {
                ...prev,
-               showNameError:true,
                showEmailError:true,
                showPasswordError:true
             }
       });
       setLoading(true);
-      if(!signUpInputs.name){
-        console.log("y")
-               setErrors((preverror)=>{
-                return {
-                ...preverror,
-                nameError:"Name is missing"
-              }
-               })
-      }
-      if(!signUpInputs.email){
+      if(!signInInputs.email){
         console.log("a")
                setErrors((preverror)=>{
                 return {
@@ -60,7 +41,7 @@ function SignupLeft({setLoading}:SignupLeftProps) {
               }
                })
       }
-      if(!signUpInputs.password){
+      if(!signInInputs.password){
         console.log("s")
         setErrors((preverror)=>{
           return {
@@ -71,14 +52,14 @@ function SignupLeft({setLoading}:SignupLeftProps) {
         
       }
 
-      if(signUpInputs.name==''||signUpInputs.email==''||signUpInputs.password==''){
+      if(signInInputs.email==''||signInInputs.password==''){
         setLoading(false)
         console.log(error, 1)
         return 
       }
    
       
-      const result= signUpBody.safeParse(signUpInputs);
+      const result= signInBody.safeParse(signInInputs);
       
       if(!result.success){
         console.log("input data is errounous")
@@ -86,16 +67,12 @@ function SignupLeft({setLoading}:SignupLeftProps) {
         const issues=result.error.issues;
 
         const updatedErrors={
-          nameError:'',
           emailError:'',
           passwordError:''   
         }
         
 
       issues.forEach((issue)=>{
-        if(issue.path[0]==='name'){
-          updatedErrors.nameError=issue.message
-        }
         if(issue.path[0]==='email'){
           const res = updatedErrors.emailError=issue.message
           console.log(res)
@@ -111,26 +88,23 @@ function SignupLeft({setLoading}:SignupLeftProps) {
       }
 
       try{
-        const response=await axios.post(`${base_url}/api/v1/user/signup`, {
-                  name:signUpInputs.name,
-                  email:signUpInputs.email,
-                  password:signUpInputs.password         
+        const response=await axios.post(`${base_url}/api/v1/user/signin`, {
+                  email:signInInputs.email,
+                  password:signInInputs.password         
         })
         console.log(response);
         localStorage.setItem('token',response.data.jwt);
         // setErrors((preverror)=>{
         //   return {
         //     ...preverror,
-        //     nameError:'',
         //     emailError:'',
         //     passwordError:'' 
         //   }
         // })
-        navigate('/blogs')
+        navigate('/blogs/')
         // setsignUpInputs((prev)=>{
         //   return {
         //     ...prev,
-        //     name:'',
         //     email:'',
         //     password:''
         //   }
@@ -161,59 +135,36 @@ function SignupLeft({setLoading}:SignupLeftProps) {
                         <div className='text-center font-bold text-3xl'>Create an account
                         </div>
 
-                        <div className='pt-2 text-center font-medium text-gray-500'>Already have an account? <Link className='underline font-medium' to={'/signin'}>Login</Link>
+                        <div className='pt-2 text-center font-medium text-gray-500'>Already have an account? <Link className='underline font-medium' to={'/'}>Signup</Link>
                         </div>
                         
-                        <InputBox label={'Name'} placeholder={'Jason Roy'} value={signUpInputs.name} onChange={(e)=>{
-                          setsignUpInputs({
-                            ...signUpInputs,
-                            name:e.target.value
-                          })
-                          if(e.target.value){
-                             setShowError((prev)=>{
-                                      return {
-                                        ...prev,
-                                        showNameError:false
-                                      }
-                             });    
-                          }
-                          else{
-                            setShowError((prev)=>{
-                              return {
-                                ...prev,
-                                showNameError:true
-                              }
-                     });    
-                          }
-                        }} />
-                         {error.nameError && showError.showNameError&& <div className='text-red-500 text-lg px-8'>{error.nameError}</div>}
-                         <InputBox label={'Email'} placeholder={'example@gmail.com'} value={signUpInputs.email} onChange={(e)=>{
-                                 setsignUpInputs({
-                                  ...signUpInputs,
+                             <InputBox label={'Email'} placeholder={'example@gmail.com'} value={signInInputs.email} onChange={(e)=>{
+                                 setsignInInputs({
+                                  ...signInInputs,
                                   email:e.target.value
                                 })
-                                if(e.target.value){
-                                  setShowError((prev)=>{
-                                    return {
-                                      ...prev,
-                                      showEmailError:false
-                                    }
-                           });    
-                               }
-                               else{
-                                setShowError((prev)=>{
-                                  return {
-                                    ...prev,
-                                    showEmailError:true
-                                  }
-                         });    
-                               }
-                                
+                                            if(e.target.value){
+                                            setShowError((prev)=>{
+                                                return {
+                                                ...prev,
+                                                showEmailError:false
+                                                     }
+                                                 });    
+                                             }
+                                             else{
+                                            setShowError((prev)=>{
+                                            return {
+                                                ...prev,
+                                                showEmailError:true
+                                                }
+                                             });    
+                                            }
+                                            
                         }} />
                         {error.emailError &&showError.showEmailError&&<div className='text-red-500 text-lg px-8'>{error.emailError}</div>}
-                         <InputBox label={'Password'} placeholder={'abc@@ABC124'} value={signUpInputs.password} onChange={(e)=>{
-                                 setsignUpInputs({
-                                  ...signUpInputs,
+                         <InputBox label={'Password'} placeholder={'abc@@ABC124'} value={signInInputs.password} onChange={(e)=>{
+                                 setsignInInputs({
+                                  ...signInInputs,
                                   password:e.target.value
                                 })
                                 if(e.target.value){
@@ -236,7 +187,7 @@ function SignupLeft({setLoading}:SignupLeftProps) {
                          {error.passwordError &&showError.showPasswordError&&<div className='text-red-600 text-lg px-8'>{error.passwordError}</div>}
                        
                         <div className='px-8'>
-                        <button onClick={handleForm} className='bg-[#1F1F1F] text-white  w-full mt-6 p-3 rounded-md hover:bg-black transition ease-in'>Sign Up</button>
+                        <button onClick={handleForm} className='bg-[#1F1F1F] text-white  w-full mt-6 p-3 rounded-md hover:bg-black transition ease-in'>Login</button>
                         </div>
                         
 
@@ -254,5 +205,4 @@ function SignupLeft({setLoading}:SignupLeftProps) {
     </div>
   )
 }
-
-export default SignupLeft
+export default SigninLeft

@@ -43,13 +43,22 @@ blog.post('/blog', async(c) => {
         }).$extends(withAccelerate())
          
         try{
+            const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            let date= new Date();
+            let month= months[date.getMonth()];
+            let day= date.getDate();
+            let year=date.getFullYear();
+
+            const finalDate= `${month} ${day}, ${year} `
+
 
             const blog= await prisma.blog.create({
                data:{
                 title:body.title,
                 content: body.content,
                 authorId:authorId,
-                published:true
+                published:true,
+                date:finalDate
                }  
         
             })
@@ -128,7 +137,12 @@ blog.get('/blog/bulk',async(c)=>{
             datasourceUrl: c.env.DATABASE_URL
         }).$extends(withAccelerate())
         try{
-            const blog= await prisma.blog.findMany();
+            const blog= await prisma.blog.findMany({
+                include:{
+                    author:true
+                }
+
+            });
         
             return c.json({
               blogs:blog
@@ -163,7 +177,10 @@ blog.get('/blog/:id', async(c) => {
             const blog= await prisma.blog.findFirst({
                 where:{
                     id:id
-                } 
+                },
+                include:{
+                    author:true
+                }
         
             })
         
