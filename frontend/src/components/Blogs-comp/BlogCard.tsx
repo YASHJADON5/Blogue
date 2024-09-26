@@ -11,14 +11,16 @@ function BlogCard({
     publishDate,
     title,
     content,
-    id
+    id,
+    page
   
 }:{ AvatarName:string,
     name:string,
     publishDate:string,
     title:string,
     content:string,
-    id:string
+    id:string,
+    page:string
     
 }) {
 
@@ -45,7 +47,7 @@ function BlogCard({
         </div>
         </Link>
         <div className='text-gray-500 font-lg pt-2'>
-              {`${content.slice(0,150)}...`}
+              {page==="SingleBlog"?content:`${content.slice(0,150)}...`}
         </div>
 
         <div className='pt-2 text-gray-400 text-sm'>

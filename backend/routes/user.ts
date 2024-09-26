@@ -98,13 +98,16 @@ user.post('/user/signin', async(c) => {
         try{
             const user= await prisma.user.findUnique({
                 where:{
-                    email:body.email,
-                    password:body.password,         
+                    email:body.email,       
                 }
             })
             if(!user){
                 c.status(403);
-                return c.json({error:"user not found"});
+                return c.json({error:"Email not found"});
+            }
+            if(user.password!==body.password){
+                  c.status(403)
+                  return c.json({error:"Password is incorrect"});
             }
             const token=  await sign({ id:user.id},c.env.JWT_KEY);
             

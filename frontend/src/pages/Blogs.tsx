@@ -45,7 +45,7 @@ function Blog() {
       <div className='flex flex-col items-center '>
         <div className='max-w-xl'>  
           {blogs.map((blog,index)=>{
-             return <BlogCard key={index} id={blog.id} AvatarName={blog.author?.name[0]} name={blog.author?.name} publishDate={blog.date} title={blog.title} content={blog.content} />
+             return <BlogCard key={index} page={"landingpage"} id={blog.id} AvatarName={blog.author?.name[0]} name={blog.author?.name} publishDate={blog.date} title={blog.title} content={blog.content} />
           })}        
        </div>
       </div>

@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import spinner from '../assets/spinner.svg'
+import Appbar from '../components/General/Appbar'
+import BlogCard from '../components/Blogs-comp/BlogCard'
 
 const base_url = import.meta.env.VITE_BASE_URL
 
@@ -33,7 +35,7 @@ function SingleBlog() {
   const selector= useSelector((state : RootState)=>state.blogs)
   console.log("S",selector.blogs);
   
-  const {id}=useParams()
+  const { id } = useParams<{ id: string }>();
 
   let [blog,setBlog]=useState<Blog|null>(null);
   useEffect(() => {
@@ -75,18 +77,9 @@ function SingleBlog() {
 
   return (
     <>
-    <div>
-      Yash
-    </div>
-    <div>
-      {blog?.title}
-      
-    </div>
-    <div>
-      {blog?.content}
-    </div>
-    <div>
-      {blog?.author.name[0]}
+    <Appbar/>
+    <div className='mx-auto max-w-2xl'>
+      <BlogCard AvatarName={blog?.author.name[0]||""} name={blog?.author.name||""} publishDate={blog?.date||""} title={blog?.title||""} content={blog?.content||""} id={blog?.id||""} page={"SingleBlog"} />
     </div>
     </>
   )

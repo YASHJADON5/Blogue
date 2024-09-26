@@ -7,11 +7,17 @@ const base_url = import.meta.env.VITE_BASE_URL;
 
 
 function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
+   const [count,setCount]= useState(1);
+  console.log("c-rendered")
     const navigate=useNavigate()
     const [showError,setShowError]=useState({
       showEmailError:true,
       showPasswordError:true
     });
+    const onCount=()=>{
+       setCount(prev=>prev+1);
+       console.log(error)
+    }
     
     // const [loading,setLoading]=useState(false);
     const [signInInputs,setsignInInputs]= useState<signInInputType>({
@@ -72,19 +78,19 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
         }
         
 
-      issues.forEach((issue)=>{
-        if(issue.path[0]==='email'){
-          const res = updatedErrors.emailError=issue.message
-          console.log(res)
-        }
-        if(issue.path[0]==='password'){
-          updatedErrors.passwordError=issue.message
-        }
-      })
-        console.log("hi")
-        setErrors(updatedErrors)
-        setLoading(false);
-        return 
+          issues.forEach((issue)=>{
+          if(issue.path[0]==='email'){
+            updatedErrors.emailError=issue.message
+            
+          }
+          if(issue.path[0]==='password'){
+            updatedErrors.passwordError=issue.message
+          }
+        })
+          console.log("hi")
+          setErrors(updatedErrors)
+          setLoading(false);
+          return 
       }
 
       try{
@@ -94,32 +100,25 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
         })
         console.log(response);
         localStorage.setItem('token',response.data.jwt);
-        // setErrors((preverror)=>{
-        //   return {
-        //     ...preverror,
-        //     emailError:'',
-        //     passwordError:'' 
-        //   }
-        // })
-        navigate('/blogs/')
-        // setsignUpInputs((prev)=>{
-        //   return {
-        //     ...prev,
-        //     email:'',
-        //     password:''
-        //   }
-        // })
-        
-         
+        setLoading(false)
+      
+        navigate('/blogs')
+  
       }
       catch(e){
-        console.log('catch block', e);
-      }
-      finally{
-        
+          // Handle errors from the API
+          if (e.response) {
+            const errorMessage = e.response.data.error;
+            if (errorMessage === "Email not found") {
+                setErrors({ emailError: "Email not found", passwordError: "" });
+            } else if (errorMessage === "Password is incorrect") {
+                setErrors({ emailError: "", passwordError: "Password is incorrect" });
+            }
+        }
         setLoading(false);
 
-      }
+      }   
+      
 
     }
 
@@ -137,6 +136,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
 
                         <div className='pt-2 text-center font-medium text-gray-500'>Already have an account? <Link className='underline font-medium' to={'/'}>Signup</Link>
                         </div>
+                        <button  onClick={onCount} className='bg-gray bg-orange-500 h-7 w-20'>Count</button>
                         
                              <InputBox label={'Email'} placeholder={'example@gmail.com'} value={signInInputs.email} onChange={(e)=>{
                                  setsignInInputs({
@@ -189,14 +189,6 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
                         <div className='px-8'>
                         <button onClick={handleForm} className='bg-[#1F1F1F] text-white  w-full mt-6 p-3 rounded-md hover:bg-black transition ease-in'>Login</button>
                         </div>
-                        
-
-
-                   
-
-
-
-
 
 
                   </div>
@@ -205,4 +197,4 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
     </div>
   )
 }
-export default SigninLeft
+export default SigninLeft 

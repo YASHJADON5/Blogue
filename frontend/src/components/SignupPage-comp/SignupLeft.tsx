@@ -20,7 +20,7 @@ function SignupLeft({setLoading}:SignupLeftProps) {
       showPasswordError:true
     });
     
-    // const [loading,setLoading]=useState(false);
+    
     const [signUpInputs,setsignUpInputs]= useState<signUpInputType>({
       name:'',
       email:'',
@@ -97,14 +97,13 @@ function SignupLeft({setLoading}:SignupLeftProps) {
           updatedErrors.nameError=issue.message
         }
         if(issue.path[0]==='email'){
-          const res = updatedErrors.emailError=issue.message
-          console.log(res)
+          updatedErrors.emailError=issue.message
         }
         if(issue.path[0]==='password'){
           updatedErrors.passwordError=issue.message
         }
       })
-        console.log("hi")
+        
         setErrors(updatedErrors)
         setLoading(false);
         return 
