@@ -4,6 +4,7 @@ import { withAccelerate } from '@prisma/extension-accelerate';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { createblogBody } from 'blogue-common'
 import { updateblogBody } from 'blogue-common'
+import { convert } from 'html-to-text';
 
 
 
@@ -143,9 +144,14 @@ blog.get('/blog/bulk',async(c)=>{
                 }
 
             });
-        
+
+            const sanitizedBlogs = blog.map((blog) => ({
+                ...blog,
+                content: convert(blog.content), // Convert the HTML content to plain text
+            }));
+
             return c.json({
-              blogs:blog
+                blogs: sanitizedBlogs,
             });
         }
         catch(e){

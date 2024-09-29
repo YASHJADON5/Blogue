@@ -8,8 +8,11 @@
     "@prisma/client": "^5.19.1",
     "@prisma/extension-accelerate": "^1.1.0",
     "blogue-common": "^1.0.0",
+    "dompurify": "^3.1.7",
     "dotenv": "^16.4.5",
     "hono": "^4.5.11",
+    "html-to-text": "^9.0.5",
+    "jsdom": "^25.0.1",
     "jsonwebtoken": "^9.0.2",
     "prisma": "^5.19.1"
   },

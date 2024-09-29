@@ -77,7 +77,7 @@ function SingleBlog() {
 
   return (
     <>
-    <Appbar/>
+    <Appbar publish={"regular"} content={''} title={''}/>
     <div className='mx-auto max-w-2xl'>
       <BlogCard AvatarName={blog?.author.name[0]||""} name={blog?.author.name||""} publishDate={blog?.date||""} title={blog?.title||""} content={blog?.content||""} id={blog?.id||""} page={"SingleBlog"} />
     </div>

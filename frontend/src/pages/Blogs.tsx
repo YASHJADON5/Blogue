@@ -27,7 +27,6 @@ function Blog() {
   
 
   const {blogs,loading} : { blogs: Blogs[], loading: boolean }= useBlogs();
-  console.log(blogs);
   
   if(loading){
           return(
@@ -41,7 +40,7 @@ function Blog() {
 
   return (
     <div>
-      <Appbar />
+      <Appbar publish={"regular"} content={''} title={''}/>
       <div className='flex flex-col items-center '>
         <div className='max-w-xl'>  
           {blogs.map((blog,index)=>{

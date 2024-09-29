@@ -3,5 +3,13 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "skipLibCheck": true, // Skip type checking for libraries
+    // You can add more compiler options here
+    "target": "esnext",   // Specify ECMAScript target version
+    "module": "commonjs", // Specify module code generation
+    "lib": ["DOM", "ESNext"], // Include DOM and ESNext for browser compatibility
+    "strict": true        // Enable all strict type checking options
+  }
 }

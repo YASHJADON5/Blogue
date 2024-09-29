@@ -7,27 +7,33 @@ const base_url = import.meta.env.VITE_BASE_URL;
 
 
 function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
-   const [count,setCount]= useState(1);
-  console.log("c-rendered")
+   
     const navigate=useNavigate()
+
     const [showError,setShowError]=useState({
       showEmailError:true,
       showPasswordError:true
     });
-    const onCount=()=>{
-       setCount(prev=>prev+1);
-       console.log(error)
-    }
+
+   
     
-    // const [loading,setLoading]=useState(false);
+   
     const [signInInputs,setsignInInputs]= useState<signInInputType>({
       email:'',
       password:''
     })
-    const [error,setErrors] =useState({
+    const [errors,setErrors] =useState({
          emailError:'',
          passwordError:''       
     })
+
+
+
+
+
+
+
+
 
     const handleForm=async()=>{
       setShowError((prev)=>{
@@ -37,7 +43,10 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
                showPasswordError:true
             }
       });
-      setLoading(true);
+
+         setLoading(true);
+       
+
       if(!signInInputs.email){
         console.log("a")
                setErrors((preverror)=>{
@@ -58,9 +67,9 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
         
       }
 
-      if(signInInputs.email==''||signInInputs.password==''){
-        setLoading(false)
-        console.log(error, 1)
+      if(signInInputs.email===''||signInInputs.password===''){
+        setLoading(false);
+        console.log(errors, 1)
         return 
       }
    
@@ -68,7 +77,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
       const result= signInBody.safeParse(signInInputs);
       
       if(!result.success){
-        console.log("input data is errounous")
+        
         console.log(result.error.issues);
         const issues=result.error.issues;
 
@@ -87,9 +96,9 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
             updatedErrors.passwordError=issue.message
           }
         })
-          console.log("hi")
+        
           setErrors(updatedErrors)
-          setLoading(false);
+          
           return 
       }
 
@@ -105,8 +114,8 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
         navigate('/blogs')
   
       }
-      catch(e){
-          // Handle errors from the API
+      catch(e:unknown){
+          
           if (e.response) {
             const errorMessage = e.response.data.error;
             if (errorMessage === "Email not found") {
@@ -116,6 +125,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
             }
         }
         setLoading(false);
+        return 
 
       }   
       
@@ -136,7 +146,6 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
 
                         <div className='pt-2 text-center font-medium text-gray-500'>Already have an account? <Link className='underline font-medium' to={'/'}>Signup</Link>
                         </div>
-                        <button  onClick={onCount} className='bg-gray bg-orange-500 h-7 w-20'>Count</button>
                         
                              <InputBox label={'Email'} placeholder={'example@gmail.com'} value={signInInputs.email} onChange={(e)=>{
                                  setsignInInputs({
@@ -161,7 +170,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
                                             }
                                             
                         }} />
-                        {error.emailError &&showError.showEmailError&&<div className='text-red-500 text-lg px-8'>{error.emailError}</div>}
+                        {errors.emailError &&showError.showEmailError&&<div className='text-red-500 text-lg px-8'>{errors.emailError}</div>}
                          <InputBox label={'Password'} placeholder={'abc@@ABC124'} value={signInInputs.password} onChange={(e)=>{
                                  setsignInInputs({
                                   ...signInInputs,
@@ -184,7 +193,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
                          });    
                                }
                         }} />
-                         {error.passwordError &&showError.showPasswordError&&<div className='text-red-600 text-lg px-8'>{error.passwordError}</div>}
+                         {errors.passwordError &&showError.showPasswordError&&<div className='text-red-600 text-lg px-8'>{errors.passwordError}</div>}
                        
                         <div className='px-8'>
                         <button onClick={handleForm} className='bg-[#1F1F1F] text-white  w-full mt-6 p-3 rounded-md hover:bg-black transition ease-in'>Login</button>
