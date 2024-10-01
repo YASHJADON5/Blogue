@@ -21,8 +21,8 @@ function PublishBlog() {
         <div className="max-w-full w-full">
           <input
             ref={inputRef}
-            onChange={handleTitleChange} // Call the handler on input change
-            className='w-full mx-auto bg-white outline-none border border-teal-800 p-4 text-4xl'
+            onChange={handleTitleChange}
+            className='w-full mx-auto bg-white outline-none border border-teal-800 p-4 h-20 text-4xl'
             placeholder='Title'
             type="text"
           />

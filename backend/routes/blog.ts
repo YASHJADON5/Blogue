@@ -168,6 +168,153 @@ blog.get('/blog/bulk',async(c)=>{
  
 })
 
+blog.post('/saveblog',async(c)=>{
+    console.log("YAsh")
+    const body= await c.req.json();
+    const authorId=c.get('userId');
+
+    if(!body){
+        c.status(404);
+        return c.json({msg:"body not found"})
+    }
+
+    try{
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL
+        }).$extends(withAccelerate())
+
+        try{
+            const existingSavedBlog = await prisma.savedBlogs.findUnique({
+                where: {
+                    userId_blogId: {
+                        userId: authorId,
+                        blogId: body.id,
+                    },
+                },
+            });
+    
+            if (existingSavedBlog) {
+                return c.json({ msg: "Blog already saved" });
+            }
+    
+            const response= await prisma.savedBlogs.create({
+               data:{
+                user: { connect: { id: authorId } },
+                blog: { connect: { id: body.id } },
+               }
+            })
+
+            console.log(response);
+            return c.json({"msg":"blog saved successfully"})
+        }
+        catch(e){
+            console.log("error while saving blog");
+            c.status(500); // Internal Server Error
+            return c.json({ msg: "Error while saving blog", error: e.message }); 
+        }
+
+    }
+    catch(e){
+        return c.json({ msg: "Error while connecting to the db", error: e.message });
+    }
+
+})
+
+
+blog.delete('/unsaveblog',async(c)=>{
+    const body= await c.req.json();
+    const authorId=c.get('userId');
+
+    if(!body){
+        c.status(404);
+        return c.json({msg:"body not found"})
+    }
+
+    try{
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL
+        }).$extends(withAccelerate())
+
+        try{
+            const response= await prisma.savedBlogs.delete({
+                where: {
+                    userId_blogId: {
+                        userId: authorId,
+                        blogId: body.id,
+                    },
+                },
+            })
+
+            console.log(response);
+            return c.json({"msg":"blog unsaved successfully"})
+        }
+        catch(e){
+            
+            return c.json({ msg: "Error while unsaving blog", error: e.message }); 
+        }
+
+    }
+    catch(e){
+        return c.json({ msg: "Error while connecting to the db", error: e.message });
+
+    }
+
+})
+
+
+blog.get('/fetchSavedBlogs',async(c)=>{
+    const authorId=c.get('userId');
+    // const body= c.req.json();
+    // if(!body){
+    //     c.json({"msg":"body not found"})
+    // }
+
+    try{
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL
+        }).$extends(withAccelerate())
+
+        try{
+
+            const blogs= await prisma.savedBlogs.findMany({
+                where:{
+                    userId:authorId
+                },
+                select: {
+                    blog: {
+                        select: {
+                            id: true,
+                            title: true,
+                            content: true,
+                            date:true
+                        }
+                    }
+                }
+            })
+
+            const sanitizedBlogs = blogs.map((blog) => ({
+                ...blog.blog,
+                content: convert(blog.blog.content), // Convert the HTML content to plain text
+            }));
+            console.log(blogs)
+            return c.json(sanitizedBlogs)
+
+        }
+        catch(e){
+            return c.json({ msg: "Error while fetching saved blogs", error: e.message }); 
+
+        }
+
+    }
+    catch(e){
+        return c.json({ msg: "Error while connecting to the db", error: e.message });
+
+    }
+
+})
+
+
+
 blog.get('/blog/:id', async(c) => {
     const id=  c.req.param("id");
     console.log(id);

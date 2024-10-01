@@ -20,7 +20,7 @@ model User{
   name     String
   password String
   Blogs     Blog[]
-
+  savedBlogs SavedBlogs[]
 }
 
 model Blog{
@@ -30,6 +30,19 @@ model Blog{
    published  Boolean @default(false)
    author     User @relation(fields: [authorId],references: [id])
    authorId   String
-   date      String?
+   date       String?
+   savedBy    SavedBlogs[]
+  
 
 }
+
+model SavedBlogs{
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  blog       Blog      @relation(fields: [blogId], references: [id])
+  blogId     String
+
+  @@id([userId, blogId])
+
+}
+
