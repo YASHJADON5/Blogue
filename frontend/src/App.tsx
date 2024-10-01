@@ -6,6 +6,8 @@ import Signup from './pages/Signup'
 import Blog from './pages/Blogs'
 import SingleBlog from './pages/SingleBlog'
 import PublishBlog from './pages/PublishBlog'
+import SavedBlogs from './pages/SavedBlogs'
+
 
 
 
@@ -21,6 +23,8 @@ function App() {
                   <Route path='/blogs' element={<Blog />}></Route>
                   <Route path={'/blog/:id'} element={<SingleBlog />}></Route>
                   <Route path={'/publish'} element={<PublishBlog />}></Route>
+                  <Route path={'/savedblogs'} element={<SavedBlogs />}></Route>
+
 
         </Routes>   
     </BrowserRouter>

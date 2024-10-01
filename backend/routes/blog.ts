@@ -286,7 +286,12 @@ blog.get('/fetchSavedBlogs',async(c)=>{
                             id: true,
                             title: true,
                             content: true,
-                            date:true
+                            date:true,
+                            author: {  
+                                select: {
+                                    name: true
+                                }
+                            }
                         }
                     }
                 }

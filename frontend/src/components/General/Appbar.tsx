@@ -18,9 +18,8 @@ function Appbar({publish, content, title}:{publish:string|"",content:string|"",t
   const handleFinalPublish = async () => {
     
     setLoading(true);
-  
-    // Use setTimeout to allow the spinner to show immediately
-    setTimeout(async () => {
+
+    
       try {
         const response = await axios.post(`${base_url}/api/v1/blog`, {
           title: title,
@@ -37,9 +36,9 @@ function Appbar({publish, content, title}:{publish:string|"",content:string|"",t
         console.log(e);
         navigate('/blogs');
       } finally {
-        setLoading(false); // Set loading to false after the API call
+        setLoading(false);
       }
-    }, 0); // Executes the function immediately after the current call stack
+    
   };
 
   const hnadleclick=()=>{
@@ -48,6 +47,11 @@ function Appbar({publish, content, title}:{publish:string|"",content:string|"",t
   function handleSignoutCLick(){
     localStorage.removeItem('token')
     navigate('/')
+  }
+
+  const handleSavedblogs=()=>{
+    navigate('/savedblogs')
+    
   }
   
 
@@ -74,10 +78,10 @@ function Appbar({publish, content, title}:{publish:string|"",content:string|"",t
             <Avatar name={"Y"} hsize='h-10' wsize='w-10'/>
             </div>
             {signoutBox&&
-            <div className='h-1/3 w-1/6 bg-white absolute mt-3 right-10 rounded-md shadow-xl '>
+            <div className='h-1/3 w-1/6 bg-white absolute mt-3 right-10 rounded-md shadow-xl cursor-pointer '>
               <ul className='p-5 pl-6'>
               <li className="text-[#9f9c9c] hover:text-[#515050] transition duration-200 ease-in-linear font-semibold">My Blogs</li>
-              <li className="text-[#9f9c9c] hover:text-[#515050] transition duration-200 ease-in-linear font-semibold">Saved Blogs</li>
+              <li onClick={handleSavedblogs} className="text-[#9f9c9c] hover:text-[#515050] transition duration-200 ease-in-linear font-semibold">Saved Blogs</li>
               <li onClick={handleSignoutCLick} className="text-[#9f9c9c] hover:text-[#515050] transition duration-200 ease-in-linear font-semibold">Sign out</li>
               </ul>
 
