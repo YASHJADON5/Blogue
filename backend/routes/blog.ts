@@ -138,16 +138,18 @@ blog.get('/blog/bulk',async(c)=>{
             datasourceUrl: c.env.DATABASE_URL
         }).$extends(withAccelerate())
         try{
-            const blog= await prisma.blog.findMany({
-                include:{
-                    author:true
+            const blogs = await prisma.blog.findMany({
+                include: {
+                  author: {
+                    select: {
+                      name: true
+                    }
+                  }
                 }
-
-            });
-
-            const sanitizedBlogs = blog.map((blog) => ({
+              });
+            const sanitizedBlogs = blogs.map((blog) => ({
                 ...blog,
-                content: convert(blog.content), // Convert the HTML content to plain text
+                content: convert(blog.content), 
             }));
 
             return c.json({
@@ -264,10 +266,7 @@ blog.delete('/unsaveblog',async(c)=>{
 
 blog.get('/fetchSavedBlogs',async(c)=>{
     const authorId=c.get('userId');
-    // const body= c.req.json();
-    // if(!body){
-    //     c.json({"msg":"body not found"})
-    // }
+   
 
     try{
         const prisma = new PrismaClient({
@@ -280,29 +279,12 @@ blog.get('/fetchSavedBlogs',async(c)=>{
                 where:{
                     userId:authorId
                 },
-                select: {
-                    blog: {
-                        select: {
-                            id: true,
-                            title: true,
-                            content: true,
-                            date:true,
-                            author: {  
-                                select: {
-                                    name: true
-                                }
-                            }
-                        }
-                    }
+                 select:{
+                     blogId:true
                 }
+                
             })
-
-            const sanitizedBlogs = blogs.map((blog) => ({
-                ...blog.blog,
-                content: convert(blog.blog.content), // Convert the HTML content to plain text
-            }));
-            console.log(blogs)
-            return c.json(sanitizedBlogs)
+            return c.json(blogs)
 
         }
         catch(e){
@@ -332,7 +314,7 @@ blog.get('/blog/:id', async(c) => {
         }).$extends(withAccelerate())
         
         try{
-            const blog= await prisma.blog.findFirst({
+            const blogs= await prisma.blog.findFirst({
                 where:{
                     id:id
                 },
@@ -341,8 +323,15 @@ blog.get('/blog/:id', async(c) => {
                 }
         
             })
+            console.log(blogs)
+
         
-            return c.json({msg:blog});
+            const sanitizedBlogs = ({
+                ...blogs,
+                content: convert(blogs?.content), 
+            });
+            console.log(blogs)
+            return c.json(sanitizedBlogs)
     
         }
         catch(e){

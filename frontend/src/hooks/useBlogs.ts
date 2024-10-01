@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { addBlogs } from '../store/blogSlice'
+import { addSavedBlogs } from '../store/savedBlogSlice'
 
 const base_url= import.meta.env.VITE_BASE_URL
 
@@ -10,24 +11,32 @@ interface Author{
 }
   
   
-  interface Blogs {
+  interface Blog {
      
     title:string,
     content:string,
     date:string,
-    author:Author
-    id:string
+    author:Author,
+    id:string,
   
   }
+  interface SavedBlog {
+    blogId: string;
+    userId: string;
+  }
+ 
 
-function useBlogs() : { blogs: Blogs[], loading: boolean } {
+function useBlogs({savedState}:{savedState:boolean}) : { blogs: Blog[], loading: boolean, savedBlogIds: SavedBlog[] } {
     const dispatch=useDispatch()
    
-    const [blogs,setBlogs]= useState<Blogs[]>([])
+    const [blogs,setBlogs]= useState<Blog[]>([])
     const [loading,setLoading]=useState<boolean>(true)
+    const [savedBlogIds, setSavedBlogIds] = useState<SavedBlog[]>([]);
+
 
     useEffect(()=>{
         (async()=>{
+            setLoading(true)
             
             try{
                 const token= localStorage.getItem('token')
@@ -36,9 +45,16 @@ function useBlogs() : { blogs: Blogs[], loading: boolean } {
                         "authorization":token
                     }
                 })
-                // console.log(response.data)
                 setBlogs(response.data.blogs);
                 dispatch(addBlogs(response.data.blogs));
+                
+                const res = await axios.get(`${base_url}/api/v1/fetchSavedBlogs`, { headers: { "authorization": token } });
+               
+                setSavedBlogIds(res.data);
+                dispatch(addSavedBlogs(res.data))
+                console.log(res.data);
+
+
                 setLoading(false);
 
             }
@@ -48,9 +64,9 @@ function useBlogs() : { blogs: Blogs[], loading: boolean } {
 
         })()
 
-    },[])
+    },[savedState])
 
-    return {blogs,loading};
+    return {blogs,loading,savedBlogIds};
  
 }
 
