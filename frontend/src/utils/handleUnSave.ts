@@ -2,17 +2,13 @@ import axios from "axios";
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
-interface ChildProps {
-    setsavedState: React.Dispatch<React.SetStateAction<boolean>>;
-}
+
 
 export default async function handleUnSave({
     setLoading,
-    id,
-    setsavedState,
+    id,  
 }: {
     setLoading: (value: boolean) => void;
-    setsavedState: React.Dispatch<React.SetStateAction<boolean>>; 
     id: string;
 }): Promise<void> {
     setLoading(true);
@@ -26,7 +22,6 @@ export default async function handleUnSave({
             },
         });
 
-        setsavedState(prev => !prev); 
         console.log(response);
     } catch (e) {
         console.log("error while saving blog from frontend", e);

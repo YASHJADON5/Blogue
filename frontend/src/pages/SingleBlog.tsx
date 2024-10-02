@@ -5,6 +5,9 @@ import axios from 'axios';
 import spinner from '../assets/spinner.svg';
 import Appbar from '../components/General/Appbar';
 import BlogCard from '../components/Blogs-comp/BlogCard';
+import { useDispatch } from 'react-redux'
+import { addSingleBlogSaved } from '../store/savedBlogSlice';
+
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -18,7 +21,6 @@ interface Blog {
   date: string;
   author: Author;
   id: string;
-  savedBy: boolean;
 }
 
 interface Blogs {
@@ -29,28 +31,51 @@ interface RootState {
   blogs: Blogs;
 }
 
-interface SavedBlog {
-  blogId: string;
-  userId: string;
+
+
+
+interface blogId{
+  blogId:string
 }
 
-interface arrayOfSavedBlogs {
-  savedBlogs: SavedBlog[]; // Correct array type definition here
+interface User{
+  name:string
 }
 
-interface RootSavedBlog{
-  savedBlogs:arrayOfSavedBlogs;
+
+interface savedPageBlogsArray{
+  id:string,
+  title:string,
+  content:string,
+  authorId:string,
+  date:string,
+  publish:boolean,
+  user:User 
 }
+
+
+
+interface innerRoot{
+  savedBlogs:blogId[],
+  savedPageBlogs:savedPageBlogsArray[],
+  singleBlogSaved:string,
+}
+
+interface Root{
+   savedBlogs:innerRoot
+}
+
+
+
 
 
 function SingleBlog() {
-  // Update selector to match the correct type definition
-  // const savedBlogs = useSelector((state: RootSavedBlog) => state.savedBlogs); // Directly access savedBlog
+  const singleBlogSavedSelector = useSelector((state:Root) => state.savedBlogs.singleBlogSaved);
 
   const [loading, setLoading] = useState(true);
   const selector = useSelector((state: RootState) => state.blogs);
-  const [savedBlogIds, setSavedBlogIds] = useState<SavedBlog[]>([]);
   const [loadingSavedBlogs, setLoadingSavedBlogs] = useState(true);
+  const dispatch= useDispatch()
 
   const { id } = useParams<{ id: string }>();
 
@@ -78,7 +103,7 @@ function SingleBlog() {
       setBlog(filteredBlog || null);
       setLoading(false);
     }
-  }, [selector.blogs, id]);
+  }, [selector.blogs, id,singleBlogSavedSelector]);
 
   useEffect(()=>{
     setLoadingSavedBlogs(true);
@@ -88,9 +113,10 @@ function SingleBlog() {
         const token= localStorage.getItem('token')
 
         const res = await axios.get(`${base_url}/api/v1/fetchSavedBlogs`, { headers: { "authorization": token } });               
-        setSavedBlogIds(res.data);
-        console.log(res.data)
-
+        if(res.data[0].blogId){
+          dispatch(addSingleBlogSaved((res.data[0].blogId)))
+        }
+        
       }
       catch(e){
            console.log(e)
@@ -102,6 +128,8 @@ function SingleBlog() {
     })()
 
   },[])
+
+  console.log(singleBlogSavedSelector)
 
 
   if (loading|| loadingSavedBlogs) {
@@ -115,7 +143,7 @@ function SingleBlog() {
   }
 
 
-  const isSaved = blog ? savedBlogIds.some((saved) => saved.blogId === blog.id) : false;
+  const isSaved = blog&&singleBlogSavedSelector!==""? true : false;
 
   return (
     <>

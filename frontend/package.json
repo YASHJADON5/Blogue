@@ -29,6 +29,7 @@
     "slate": "^0.103.0",
     "slate-history": "^0.109.0",
     "slate-react": "^0.110.1",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "tinymce": "^7.3.0"
   },
   "devDependencies": {

@@ -300,6 +300,50 @@ blog.get('/fetchSavedBlogs',async(c)=>{
 
 })
 
+blog.get('/savedbyuser',async(c)=>{
+    const authorId=c.get('userId');
+   
+
+    try{
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL
+        }).$extends(withAccelerate())
+
+        try{
+
+            const blogs= await prisma.savedBlogs.findMany({
+                where:{
+                    userId:authorId
+                },
+                 select:{
+                     blog:true,
+                     user:{
+                            select:{
+                                name:true
+                            }
+                        }
+                    
+                },
+                
+
+                
+            })
+            return c.json(blogs)
+
+        }
+        catch(e){
+            return c.json({ msg: "Error while fetching saved blogs", error: e.message }); 
+
+        }
+
+    }
+    catch(e){
+        return c.json({ msg: "Error while connecting to the db", error: e.message });
+
+    }
+
+})
+
 
 
 blog.get('/blog/:id', async(c) => {

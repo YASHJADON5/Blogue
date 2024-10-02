@@ -8,10 +8,55 @@ import axios from 'axios'
 import spinner from '../../assets/spinner.svg'
 import handleSave from '../../utils/handleSave'
 import handleUnSave from '../../utils/handleUnSave'
+import { useDispatch ,useSelector } from 'react-redux'
+import { addSavedBlogs, addSavedPageBlogs ,addSingleBlogSaved } from '../../store/savedBlogSlice'
+
 
 
 
 const base_url= import.meta.env.VITE_BASE_URL
+
+
+
+
+interface blogId{
+  blogId:string
+}
+
+interface User{
+  name:string
+}
+interface blog{
+  id:string,
+  title:string,
+  content:string,
+  authorId:string,
+  date:string,
+  publish:boolean,
+}
+
+
+interface savedPageBlogsArray{
+  blog:blog
+  user:User 
+}
+
+
+
+interface innerRoot{
+  savedBlogs:blogId[],
+  savedPageBlogs:savedPageBlogsArray[],
+  singleBlogSaved:string,
+}
+
+interface Root{
+   savedBlogs:innerRoot
+}
+
+
+
+
+
 
 
 
@@ -24,8 +69,7 @@ function BlogCard({
     id,
     page,
     savedBlogs,
-    setsavedState
-  
+     
 }:{ AvatarName:string,
     name:string,
     publishDate:string,
@@ -34,26 +78,44 @@ function BlogCard({
     id:string,
     page:string,
     savedBlogs:boolean,
-    setsavedState:React.Dispatch<React.SetStateAction<boolean>>
+    
     
     
 }) {
-  // console.log(savedBy);
+  const dispatch=useDispatch();
+  // @ts-ignore
+  const selector= useSelector((state:Root)=>state.savedBlogs.savedBlogs);
+  const savedPageSelector= useSelector((state:Root)=>state.savedBlogs.savedPageBlogs);
+  const singleBlogSavedSelector= useSelector((state:Root)=>state.savedBlogs.singleBlogSaved);
+
+ 
   const [loading,setLoading]=useState(false);
    
   const onSave= async()=>{
-    // setLoading(true)
-    await handleSave({setLoading,id,setsavedState})
-    // setsavedState(prev=>!prev)
-    // setTimeout(()=>{
-      // setLoading(false)
-
-    // },1000)
+ 
+    await handleSave({setLoading,id})
+    // console.log(selector);
+    const arr=[...selector]
+    if (arr.some(blog => blog.blogId === id)) return;
+    arr.push({blogId:id});
+    console.log(arr)
+    if(!singleBlogSavedSelector){
+      dispatch(addSingleBlogSaved(id))
+    }
+    dispatch(addSavedBlogs(arr))
 
   }
   const onUnSave= async()=>{
-    
-    await handleUnSave({setLoading,id,setsavedState})
+
+    await handleUnSave({setLoading,id})
+    // @ts-ignore
+    const result= selector.filter((blogId)=>blogId.blogId!==id)
+    const resultSavedPageBlogs=  savedPageSelector.filter((blog)=>blog.blog.id!==id)
+    if(singleBlogSavedSelector){
+      dispatch(addSingleBlogSaved(""))
+    }
+    dispatch(addSavedPageBlogs(resultSavedPageBlogs))
+    dispatch(addSavedBlogs(result))
 
   }
  

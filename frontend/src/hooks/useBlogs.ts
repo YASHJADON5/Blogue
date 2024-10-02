@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addBlogs } from '../store/blogSlice'
 import { addSavedBlogs } from '../store/savedBlogSlice'
 
@@ -26,8 +26,10 @@ interface Author{
   }
  
 
-function useBlogs({savedState}:{savedState:boolean}) : { blogs: Blog[], loading: boolean, savedBlogIds: SavedBlog[] } {
+function useBlogs() : { blogs: Blog[], loading: boolean, savedBlogIds: SavedBlog[] } {
     const dispatch=useDispatch()
+    // @ts-ignore
+    const selector = useSelector((state)=> state.savedBlogs.savedBlogs)
    
     const [blogs,setBlogs]= useState<Blog[]>([])
     const [loading,setLoading]=useState<boolean>(true)
@@ -35,6 +37,7 @@ function useBlogs({savedState}:{savedState:boolean}) : { blogs: Blog[], loading:
 
 
     useEffect(()=>{
+        {console.log("RErendered")}
         (async()=>{
             setLoading(true)
             
@@ -53,8 +56,6 @@ function useBlogs({savedState}:{savedState:boolean}) : { blogs: Blog[], loading:
                 setSavedBlogIds(res.data);
                 dispatch(addSavedBlogs(res.data))
                 console.log(res.data);
-
-
                 setLoading(false);
 
             }
@@ -64,7 +65,7 @@ function useBlogs({savedState}:{savedState:boolean}) : { blogs: Blog[], loading:
 
         })()
 
-    },[savedState])
+    },[selector.length])
 
     return {blogs,loading,savedBlogIds};
  
