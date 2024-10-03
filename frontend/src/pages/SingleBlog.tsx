@@ -38,6 +38,7 @@ interface blogId{
   blogId:string
 }
 
+
 interface User{
   name:string
 }
@@ -113,9 +114,15 @@ function SingleBlog() {
         const token= localStorage.getItem('token')
 
         const res = await axios.get(`${base_url}/api/v1/fetchSavedBlogs`, { headers: { "authorization": token } });               
-        if(res.data[0].blogId){
-          dispatch(addSingleBlogSaved((res.data[0].blogId)))
+        const isSaved=res.data.filter((blog:blogId)=>{
+              if(blog.blogId===id){
+                return blog.blogId;
+              }
+        })
+        if(isSaved.length!==0){
+          dispatch(addSingleBlogSaved(id))
         }
+        console.log(res.data)
         
       }
       catch(e){
@@ -129,7 +136,7 @@ function SingleBlog() {
 
   },[])
 
-  console.log(singleBlogSavedSelector)
+  // console.log(singleBlogSavedSelector)
 
 
   if (loading|| loadingSavedBlogs) {
@@ -143,7 +150,7 @@ function SingleBlog() {
   }
 
 
-  const isSaved = blog&&singleBlogSavedSelector!==""? true : false;
+  const isSaved = singleBlogSavedSelector!==""? true : false;
 
   return (
     <>

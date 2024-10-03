@@ -8,6 +8,7 @@ const base_url= import.meta.env.VITE_BASE_URL
 
 
 function Appbar({publish, content, title}:{publish:string|"",content:string|"",title:string|""}) {
+  
   const[signoutBox,setSignoutBox]= useState(false);
   const navigate= useNavigate()
   const[loading,setLoading]= useState(false);
@@ -17,9 +18,7 @@ function Appbar({publish, content, title}:{publish:string|"",content:string|"",t
   }
   const handleFinalPublish = async () => {
     
-    setLoading(true);
-
-    
+      setLoading(true);  
       try {
         const response = await axios.post(`${base_url}/api/v1/blog`, {
           title: title,
@@ -53,6 +52,10 @@ function Appbar({publish, content, title}:{publish:string|"",content:string|"",t
     navigate('/savedblogs')
     
   }
+
+  const handleMyBlogs=()=>{
+    navigate('/myblogs')
+  }
   
 
   return (
@@ -80,7 +83,7 @@ function Appbar({publish, content, title}:{publish:string|"",content:string|"",t
             {signoutBox&&
             <div className='h-1/3 w-1/6 bg-white absolute mt-3 right-10 rounded-md shadow-xl cursor-pointer '>
               <ul className='p-5 pl-6'>
-              <li className="text-[#9f9c9c] hover:text-[#515050] transition duration-200 ease-in-linear font-semibold">My Blogs</li>
+              <li onClick={handleMyBlogs} className="text-[#9f9c9c] hover:text-[#515050] transition duration-200 ease-in-linear font-semibold">My Blogs</li>
               <li onClick={handleSavedblogs} className="text-[#9f9c9c] hover:text-[#515050] transition duration-200 ease-in-linear font-semibold">Saved Blogs</li>
               <li onClick={handleSignoutCLick} className="text-[#9f9c9c] hover:text-[#515050] transition duration-200 ease-in-linear font-semibold">Sign out</li>
               </ul>

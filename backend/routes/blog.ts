@@ -129,6 +129,45 @@ blog.put('/blog', async(c) => {
 
 });
 
+blog.delete('/delete/:id', async(c)=>{
+    const authorId=c.get('userId');
+    const id=  c.req.param("id");
+    
+    try{
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL
+        }).$extends(withAccelerate())
+        
+
+        try{
+
+            const response = await prisma.blog.delete({
+                where:{
+                    id:id,
+                    authorId:authorId
+                }
+            })
+
+            console.log(response)
+            c.status(200)
+            return c.json({"msg":"blog deleted successfully"})
+            
+
+
+        }
+        catch(e){
+            console.log(e)
+            return  c.json({msg:"something breaks in delete route"});
+        }
+
+
+    }
+     catch(e){
+      c.json({msg:"error while connecting to the db through accelerate"});    
+
+     }
+})
+
 
 // add pagination
 
@@ -169,6 +208,9 @@ blog.get('/blog/bulk',async(c)=>{
     }
  
 })
+
+
+
 
 blog.post('/saveblog',async(c)=>{
     console.log("YAsh")
@@ -211,7 +253,7 @@ blog.post('/saveblog',async(c)=>{
         }
         catch(e){
             console.log("error while saving blog");
-            c.status(500); // Internal Server Error
+            c.status(500); 
             return c.json({ msg: "Error while saving blog", error: e.message }); 
         }
 

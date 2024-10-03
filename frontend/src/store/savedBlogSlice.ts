@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-// Define the structure of a Blog object
+
 
 
 export const savedBlogSlice = createSlice({
@@ -8,7 +8,8 @@ export const savedBlogSlice = createSlice({
     initialState: {
         savedBlogs:[],
         savedPageBlogs:[],
-        singleBlogSaved:"" 
+        singleBlogSaved:"",
+        myBlogsSaved:[] 
     },
     reducers: {
         addSavedBlogs(state, action) {    
@@ -19,10 +20,13 @@ export const savedBlogSlice = createSlice({
         },
         addSingleBlogSaved(state, action) {    
             state.singleBlogSaved=action.payload
-        }
+        },
+        addmyBlogsSaved(state, action) {    
+            state.myBlogsSaved=action.payload
+        },
     }
 });
 
-export const { addSavedBlogs,addSavedPageBlogs,addSingleBlogSaved } = savedBlogSlice.actions;
+export const { addSavedBlogs,addSavedPageBlogs,addSingleBlogSaved,addmyBlogsSaved } = savedBlogSlice.actions;
 
 export default savedBlogSlice.reducer;

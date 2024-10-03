@@ -4,6 +4,7 @@ import { withAccelerate } from '@prisma/extension-accelerate';
 import {  sign } from 'hono/jwt'
 import { signUpBody } from 'blogue-common'
 import { signInBody } from 'blogue-common'
+import { authMiddleware } from '../middlewares/authMiddleware';
 
 
 
@@ -14,8 +15,13 @@ const user = new Hono<{
     Bindings:{
         DATABASE_URL: string,
         JWT_KEY:string
+    },
+    Variables:{
+        userId:string
     }
 }>();
+
+user.use('/user/myblogs',authMiddleware)
 
 
 user.post('/user/signup', async(c) => {
@@ -129,6 +135,50 @@ user.post('/user/signin', async(c) => {
     }
 
   });
+
+
+user.get('/user/myblogs', async(c)=>{
+
+    const authorId=c.get('userId');
+    console.log(authorId)
+    try{
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL
+        }).$extends(withAccelerate())
+
+        try{ 
+            const response = await prisma.user.findUnique({
+                where: {
+                    id: authorId
+                },
+                 select:{
+                        name:true,
+                        Blogs:true
+                 }               
+            });
+        
+            if (!response) {
+                return c.json({ msg: "User not found" }, 404);
+            }
+            console.log(authorId)
+            return c.json(response)
+
+        }
+        catch(e){
+            console.log(e);
+            c.json({
+                msg:"something breaks in myblogs route",
+                e:e
+            })
+        }
+
+    }
+    catch(e){
+       c.json({msg:"error while connecting to the db through accelerate"});   
+    }
+
+})
+
 
 
 

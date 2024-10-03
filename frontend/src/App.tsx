@@ -1,4 +1,4 @@
-import { useState } from 'react'
+
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import Signin from './pages/Signin'
@@ -7,12 +7,13 @@ import Blog from './pages/Blogs'
 import SingleBlog from './pages/SingleBlog'
 import PublishBlog from './pages/PublishBlog'
 import SavedBlogs from './pages/SavedBlogs'
+import MyBlogs from './pages/MyBlogs'
 
 
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  
 
   return (
     <>
@@ -24,8 +25,7 @@ function App() {
                   <Route path={'/blog/:id'} element={<SingleBlog />}></Route>
                   <Route path={'/publish'} element={<PublishBlog />}></Route>
                   <Route path={'/savedblogs'} element={<SavedBlogs />}></Route>
-
-
+                  <Route path={'/myblogs'} element={<MyBlogs />}></Route>
         </Routes>   
     </BrowserRouter>
     </>

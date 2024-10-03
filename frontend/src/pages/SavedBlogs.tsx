@@ -87,6 +87,7 @@ function SavedBlogs() {
     })()
   },[selector.length])
   
+  // console.log(selector)
   if(loading){
      return (
            <div className='h-screen w-screen absolute z-2 bg-white bg-opacity-55  flex justify-center items-center'>
@@ -96,7 +97,7 @@ function SavedBlogs() {
            </div>
            )
   }
-  console.log(savedBlogs);
+  // console.log(savedBlogs);
 
 
   return (
@@ -104,10 +105,10 @@ function SavedBlogs() {
 
     
      
-          {savedBlogs&&<div>
             <Appbar publish={"saved"} content={''} title={''}/>
+          {savedBlogs&&<div  className='mx-auto max-w-2xl'>
             <div className='flex flex-col items-center '>
-              <div className='max-w-xl'>  
+              <div>  
                 {savedBlogs.map((blog,index)=>{
                   return <BlogCard savedBlogs={true}  key={index} page={"SingleBlog"} id={blog.blog.id} AvatarName={blog.user.name[0]} name={blog.user?.name} publishDate={blog.blog.date} title={blog.blog.title} content={blog.blog.content} />
                 })}        

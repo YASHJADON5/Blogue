@@ -14,11 +14,11 @@ datasource db {
 }
 
 model User{
-  
-  id       String @id @default(uuid())
-  email    String @unique
-  name     String
-  password String
+
+  id        String @id @default(uuid())
+  email     String @unique
+  name      String
+  password  String
   Blogs     Blog[]
   savedBlogs SavedBlogs[]
 }
@@ -37,9 +37,9 @@ model Blog{
 }
 
 model SavedBlogs{
-  user       User      @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  blog       Blog      @relation(fields: [blogId], references: [id])
+  blog       Blog      @relation(fields: [blogId], references: [id], onDelete: Cascade)
   blogId     String
 
   @@id([userId, blogId])

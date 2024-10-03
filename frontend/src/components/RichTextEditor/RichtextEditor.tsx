@@ -3,6 +3,7 @@ import JoditEditor from 'jodit-react';
 
 function RichTextEditor({content,setContent}:{content:string,setContent:(value:string|"")=>void}) {
   const editor = useRef(null);
+  
 
 
   const config:any = {
