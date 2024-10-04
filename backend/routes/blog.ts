@@ -84,6 +84,10 @@ blog.put('/blog', async(c) => {
    
     
     const body= await c.req.json();
+    // const id = c.req.param("id")
+    const authorId = c.get('userId');
+
+    console.log(body);
 
     if(!body){
         return  c.json({msg:"body is missing"});
@@ -105,7 +109,8 @@ blog.put('/blog', async(c) => {
         try{
             const blog= await prisma.blog.update({
                 where:{
-                    id:body.id
+                    id:body.id,
+                    authorId:authorId
                 },
                data:{
                 title:body.title || undefined,
@@ -114,7 +119,7 @@ blog.put('/blog', async(c) => {
         
             })
         
-            return c.text(blog.id);
+            return c.json(blog);
         }
         catch(e){
             console.log(e)

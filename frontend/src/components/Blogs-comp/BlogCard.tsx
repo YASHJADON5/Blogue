@@ -14,6 +14,7 @@ import { addmyBlogsSaved, addSavedBlogs, addSavedPageBlogs ,addSingleBlogSaved }
 
 
 const base_url= import.meta.env.VITE_BASE_URL
+console.log(base_url)
 
 
 
@@ -120,7 +121,7 @@ function BlogCard({
   const onUnSave= async()=>{
 
     await handleUnSave({setLoading,id})
-    // @ts-ignore
+
     const result= selector.filter((blogId)=>blogId.blogId!==id)
     const resultSavedPageBlogs=  savedPageSelector.filter((blog)=>blog.blog.id!==id)
     if(singleBlogSavedSelector&&page==='SingleBlog'){
@@ -135,7 +136,10 @@ function BlogCard({
     
   }
   
-  console.log(singleBlogSavedSelector)
+  // console.log(singleBlogSavedSelector)
+
+
+  
 
 
 
@@ -169,11 +173,23 @@ function BlogCard({
                     {publishDate}
                 </div>
         </div>
+        {page !== 'myblogs' ? (
         <Link to={`/blog/${id}`}>
-        <div className='pt-2 font-bold text-2xl font-sans hover:cursor-pointer'>
-        {title}
-        </div>
+          <div className='pt-2 font-bold text-2xl font-sans hover:cursor-pointer'>
+            {title}
+          </div>
         </Link>
+      ) : (
+        <Link
+          to={{
+            pathname: `/blog/myblogs/${id}`,
+          }}
+        >
+          <div className='pt-2 font-bold text-2xl font-sans hover:cursor-pointer'>
+            {title}
+          </div>
+        </Link>
+      )}
         <div className='text-gray-500 font-lg pt-2'>
               {page==="SingleBlog"?content:`${content.slice(0,150)}...`}
         </div>
@@ -195,3 +211,12 @@ function BlogCard({
 }
 
 export default BlogCard
+
+
+// app.use(
+//   cors({
+//     origin: [process.env.FRONTEND_LOCAL_URL, process.env.FRONTEND_HOSTED_URL],
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     credentials: true, // Allow credentials
+//   })
+// ); this is cors which is in app.js file

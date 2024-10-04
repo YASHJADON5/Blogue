@@ -44,7 +44,7 @@ function Blog() {
 
   return (
     <div className=''>
-    <Appbar publish={"regular"} content={''} title={''}/>
+    <Appbar id={""} publish={"regular"} content={''} title={''}/>
     <div className='flex flex-col items-center'>
       <div className='max-w-xl'>  
        

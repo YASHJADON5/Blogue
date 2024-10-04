@@ -79,7 +79,6 @@ function SingleBlog() {
   const dispatch= useDispatch()
 
   const { id } = useParams<{ id: string }>();
-
   const [blog, setBlog] = useState<Blog | null>(null);
 
   useEffect(() => {
@@ -136,7 +135,6 @@ function SingleBlog() {
 
   },[])
 
-  // console.log(singleBlogSavedSelector)
 
 
   if (loading|| loadingSavedBlogs) {
@@ -154,7 +152,7 @@ function SingleBlog() {
 
   return (
     <>
-      <Appbar publish={'regular'} content={''} title={''} />
+      <Appbar id={''} publish={'regular'} content={''} title={''} />
       <div className="mx-auto max-w-2xl">
         {blog && !loadingSavedBlogs&&(
           <BlogCard            

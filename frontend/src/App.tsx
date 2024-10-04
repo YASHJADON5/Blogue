@@ -8,6 +8,7 @@ import SingleBlog from './pages/SingleBlog'
 import PublishBlog from './pages/PublishBlog'
 import SavedBlogs from './pages/SavedBlogs'
 import MyBlogs from './pages/MyBlogs'
+import SingleBlogMyBlogs from './pages/SingleBlogMyBlogs'
 
 
 
@@ -26,6 +27,8 @@ function App() {
                   <Route path={'/publish'} element={<PublishBlog />}></Route>
                   <Route path={'/savedblogs'} element={<SavedBlogs />}></Route>
                   <Route path={'/myblogs'} element={<MyBlogs />}></Route>
+                  <Route path={'/blog/myblogs/:id'} element={<SingleBlogMyBlogs />}></Route>
+
         </Routes>   
     </BrowserRouter>
     </>

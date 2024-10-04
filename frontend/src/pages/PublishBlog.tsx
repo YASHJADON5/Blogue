@@ -16,7 +16,7 @@ function PublishBlog() {
 
   return (
     <div>
-      <Appbar publish={"finalpublish"} title={title} content={content} />
+      <Appbar publish={"finalpublish"} title={title} content={content} id={""} />
       <div className='flex justify-center bg-white h-screen max-w-4xl mx-auto'>
         <div className="max-w-full w-full">
           <input
