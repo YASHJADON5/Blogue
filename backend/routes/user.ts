@@ -5,6 +5,7 @@ import {  sign } from 'hono/jwt'
 import { signUpBody } from 'blogue-common'
 import { signInBody } from 'blogue-common'
 import { authMiddleware } from '../middlewares/authMiddleware';
+import { convert } from 'html-to-text';
 
 
 
@@ -59,7 +60,9 @@ user.post('/user/signup', async(c) => {
                 }
              })
            const token= await sign({ id:user.id},c.env.JWT_KEY)
-           return c.json({jwt:token});
+           return c.json({jwt:token,
+            name:body.name
+           });
         }
         catch(err){
             c.status(411)
@@ -116,9 +119,11 @@ user.post('/user/signin', async(c) => {
                   return c.json({error:"Password is incorrect"});
             }
             const token=  await sign({ id:user.id},c.env.JWT_KEY);
+            console.log(user)
             
             return c.json({
-                jwt:token
+                jwt:token,
+                name:user.name
             });
 
         }
@@ -161,7 +166,13 @@ user.get('/user/myblogs', async(c)=>{
                 return c.json({ msg: "User not found" }, 404);
             }
             console.log(authorId)
-            return c.json(response)
+            const sanitizedBlogs = response.Blogs.map((blog) => ({
+                ...blog,
+                content: convert(blog.content), 
+            }));
+            return c.json({name:response.name,
+                Blogs:sanitizedBlogs
+            })
 
         }
         catch(e){

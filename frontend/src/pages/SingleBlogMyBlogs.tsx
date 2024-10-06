@@ -59,11 +59,12 @@ function SingleBlogMyBlogs() {
       </div>
     );
   }
+   const username= localStorage.getItem('username')||""
 
 
   return (
     <div>
-      <Appbar id={id||""} publish={"SingleBlogMyBlogs"} title={title} content={content} />
+      <Appbar name={username||""} id={id||""} publish={"SingleBlogMyBlogs"} title={title} content={content} />
       
       <div className='flex justify-center bg-white h-screen max-w-4xl mx-auto'>
         <div className="max-w-full w-full">

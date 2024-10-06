@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import SigninLeft from '../components/SigninPage-comp/SigninLeft'
 import SigninRight from '../components/SigninPage-comp/SigninRight'
 import spinner from '../assets/spinner.svg'

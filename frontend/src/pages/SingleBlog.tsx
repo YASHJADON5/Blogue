@@ -7,6 +7,7 @@ import Appbar from '../components/General/Appbar';
 import BlogCard from '../components/Blogs-comp/BlogCard';
 import { useDispatch } from 'react-redux'
 import { addSingleBlogSaved } from '../store/savedBlogSlice';
+import client  from '../utils/openAi';
 
 
 const base_url = import.meta.env.VITE_BASE_URL;
@@ -73,16 +74,25 @@ interface Root{
 function SingleBlog() {
   const singleBlogSavedSelector = useSelector((state:Root) => state.savedBlogs.singleBlogSaved);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const selector = useSelector((state: RootState) => state.blogs);
-  const [loadingSavedBlogs, setLoadingSavedBlogs] = useState(true);
+  const [loadingSavedBlogs, setLoadingSavedBlogs] = useState(false);
   const dispatch= useDispatch()
 
   const { id } = useParams<{ id: string }>();
   const [blog, setBlog] = useState<Blog | null>(null);
 
+  const [toggleSummary,setToggleSummary]=useState<boolean>()
+  const [summary,setSummary]=useState<string>("")
+
+
+
+  console.log("!@@",selector)
+
   useEffect(() => {
+    console.log("tr")
     if (!selector.blogs) {
+      setLoading(true);
       const fetchBlog = async () => {
         const token = localStorage.getItem('token');
         try {
@@ -96,17 +106,15 @@ function SingleBlog() {
           setLoading(false);
         }
       };
-
       fetchBlog();
     } else {
       const filteredBlog = selector.blogs.find((blog) => blog.id === id);
       setBlog(filteredBlog || null);
-      setLoading(false);
     }
-  }, [selector.blogs, id,singleBlogSavedSelector]);
+  }, [id, selector.blogs,singleBlogSavedSelector]);
 
   useEffect(()=>{
-    setLoadingSavedBlogs(true);
+   
     (async()=>{
 
       try{
@@ -122,19 +130,36 @@ function SingleBlog() {
           dispatch(addSingleBlogSaved(id))
         }
         console.log(res.data)
+
         
       }
       catch(e){
            console.log(e)
       }
-      finally{
-        setLoadingSavedBlogs(false);
-      }
 
     })()
 
+    return ()=>{dispatch(addSingleBlogSaved(""))}
+
   },[])
 
+  const handleSummaryToggle=async()=>{
+    setLoading(true);
+    setToggleSummary(true)
+    
+    const gptQuery=`I have a blog with the following content: ${blog?.content}. Please create a concise summary of this blog in simple and easy-to-understand language, keeping it as very short as possible for users to quickly read and grasp the main points. If you're unable to generate a summary from this blog content, please return the message: 'Sorry, a summary cannot be formed for this blog. You can try another one.`
+      
+    const chatCompletion = await client.chat.completions.create({
+      messages: [{ role: 'user', content: gptQuery }],
+      model: 'gpt-3.5-turbo',
+    });
+    const summ=chatCompletion.choices[0].message.content;
+   
+    setSummary(summ||"")
+
+    setLoading(false);
+
+  }
 
 
   if (loading|| loadingSavedBlogs) {
@@ -146,15 +171,33 @@ function SingleBlog() {
       </div>
     );
   }
+   const username= localStorage.getItem('username')||""
 
 
   const isSaved = singleBlogSavedSelector!==""? true : false;
 
   return (
-    <>
-      <Appbar id={''} publish={'regular'} content={''} title={''} />
-      <div className="mx-auto max-w-2xl">
-        {blog && !loadingSavedBlogs&&(
+    <div>
+      <Appbar name={username[0]||""}  id={''} publish={'regular'} content={''} title={''} />
+
+      <div className="flex flex-col items-center mx-auto max-w-2xl">
+
+
+      {toggleSummary && 
+
+      <div className='text-[#515050] font-semibold text-2xl mt-16 shadow-2xl  w-full   p-4  '> 
+      <h1 className='text-3xl text-center '>Summary</h1>
+
+      <div className='mt-8 w-full '>
+        {summary}   
+      </div>
+      </div>}
+
+
+
+
+
+        {!toggleSummary&&blog && !loadingSavedBlogs&&(
           <BlogCard            
             savedBlogs={isSaved}
             AvatarName={blog.author.name[0] || ''}
@@ -166,8 +209,11 @@ function SingleBlog() {
             page={'SingleBlog'}
           />
         )}
+
+      {!toggleSummary&&<button onClick={handleSummaryToggle}  type="button" className= " mt-8  text-white bg-[#4681f4] hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2">Summary</button>}
+
       </div>
-    </>
+    </div>
   );
 }
 

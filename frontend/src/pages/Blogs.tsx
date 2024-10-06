@@ -41,10 +41,12 @@ function Blog() {
            </div>
           )
   }
+  const username= localStorage.getItem('username')||""
+
 
   return (
     <div className=''>
-    <Appbar id={""} publish={"regular"} content={''} title={''}/>
+    <Appbar name={username[0]||""}  id={""} publish={"regular"} content={''} title={''}/>
     <div className='flex flex-col items-center'>
       <div className='max-w-xl'>  
        

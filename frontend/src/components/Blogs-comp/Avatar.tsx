@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 function Avatar({ name,hsize,wsize }: { name: string,hsize:string,wsize:string }) {
   return (

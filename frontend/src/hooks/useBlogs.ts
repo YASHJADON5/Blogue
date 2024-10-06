@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { addBlogs } from '../store/blogSlice'
@@ -72,4 +72,3 @@ function useBlogs() : { blogs: Blog[], loading: boolean, savedBlogIds: SavedBlog
 }
 
 export default useBlogs
-

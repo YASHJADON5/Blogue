@@ -135,8 +135,7 @@ function BlogCard({
 
     
   }
-  
-  // console.log(singleBlogSavedSelector)
+
 
 
   
@@ -199,10 +198,10 @@ function BlogCard({
               </div>
               
               {!savedBlogs&&<div>
-                 <img className='h-6 w-6 mt-2 ml-6' onClick={onSave} src={saveIcon} alt="" />
+                 <img className='h-6 w-6 mt-2 ml-6 cursor-pointer' onClick={onSave} src={saveIcon} alt="" />
               </div>}
               {savedBlogs&&<div>
-                  <img className='h-6 w-6 mt-2 ml-6' onClick={onUnSave} src={unsaveIcon} alt="" />
+                  <img className='h-6 w-6 mt-2 ml-6 cursor-pointer' onClick={onUnSave} src={unsaveIcon} alt="" />
               </div>}
         </div>
 

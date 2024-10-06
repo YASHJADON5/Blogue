@@ -1,14 +1,19 @@
-import React,{useState} from 'react'
+import {useState} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import {signInInputType,signInBody} from 'blogue-common'
 import InputBox from '../SigninAnsSignupShared/input-comp/InputBox'
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addUserName } from '../../store/userSlice';
+
+
 const base_url = import.meta.env.VITE_BASE_URL;
 
 
 function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
    
     const navigate=useNavigate()
+    const dispatch=useDispatch()
 
     const [showError,setShowError]=useState({
       showEmailError:true,
@@ -36,6 +41,14 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
 
 
     const handleForm=async()=>{
+
+      setErrors((prev)=>{
+        return {
+          ...prev,
+          emailError:'',
+         passwordError:'' 
+        }
+      })
       setShowError((prev)=>{
             return {
                ...prev,
@@ -98,7 +111,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
         })
         
           setErrors(updatedErrors)
-          
+          setLoading(false)
           return 
       }
 
@@ -110,13 +123,18 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
         console.log(response);
         localStorage.setItem('token',response.data.jwt);
         setLoading(false)
+
+        localStorage.setItem('username',response.data.name)
+
+        dispatch(addUserName(response.data.name))
       
-        navigate('/blogs')
+        navigate('/blogs');
   
       }
       catch(e:unknown){
-          
+          //  @ts-ignore
           if (e.response) {
+                      //  @ts-ignore
             const errorMessage = e.response.data.error;
             if (errorMessage === "Email not found") {
                 setErrors({ emailError: "Email not found", passwordError: "" });

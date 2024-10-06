@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import {signUpInputType,signUpBody} from 'blogue-common'
 import InputBox from '../SigninAnsSignupShared/input-comp/InputBox'
 import axios from 'axios';
+import { addUserName } from '../../store/userSlice';
+import { useDispatch } from 'react-redux';
+
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -13,6 +16,7 @@ type SignupLeftProps = {
 
 
 function SignupLeft({setLoading}:SignupLeftProps) {
+  const dispatch=useDispatch()
      const navigate=useNavigate()
     const [showError,setShowError]=useState({
       showNameError:true,
@@ -33,6 +37,15 @@ function SignupLeft({setLoading}:SignupLeftProps) {
     })
 
     const handleForm=async()=>{
+
+      setErrors((prev)=>{
+        return {
+            ...prev,
+            nameError:'',
+            emailError:'',
+            passwordError:'' 
+        }
+      })
       setShowError((prev)=>{
             return {
                ...prev,
@@ -43,7 +56,7 @@ function SignupLeft({setLoading}:SignupLeftProps) {
       });
       setLoading(true);
       if(!signUpInputs.name){
-        console.log("y")
+       
                setErrors((preverror)=>{
                 return {
                 ...preverror,
@@ -52,7 +65,7 @@ function SignupLeft({setLoading}:SignupLeftProps) {
                })
       }
       if(!signUpInputs.email){
-        console.log("a")
+      
                setErrors((preverror)=>{
                 return {
                 ...preverror,
@@ -73,7 +86,6 @@ function SignupLeft({setLoading}:SignupLeftProps) {
 
       if(signUpInputs.name==''||signUpInputs.email==''||signUpInputs.password==''){
         setLoading(false)
-        console.log(error, 1)
         return 
       }
    
@@ -117,23 +129,12 @@ function SignupLeft({setLoading}:SignupLeftProps) {
         })
         console.log(response);
         localStorage.setItem('token',response.data.jwt);
-        // setErrors((preverror)=>{
-        //   return {
-        //     ...preverror,
-        //     nameError:'',
-        //     emailError:'',
-        //     passwordError:'' 
-        //   }
-        // })
+
+        localStorage.setItem('username',response.data.name)
+                 
+        dispatch(addUserName(response.data.name))
         navigate('/blogs')
-        // setsignUpInputs((prev)=>{
-        //   return {
-        //     ...prev,
-        //     name:'',
-        //     email:'',
-        //     password:''
-        //   }
-        // })
+       
         
          
       }

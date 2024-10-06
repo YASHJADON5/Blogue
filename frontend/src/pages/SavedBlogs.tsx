@@ -23,12 +23,11 @@ interface blog{
   authorId:string,
   date:string,
   publish:boolean,
+  author:{
+    name:string
+  }
 }
 
-interface SavedBlogsArray{
-  blog:blog,
-  user:User
-}
 
 interface savedPageBlogsArray{
   blog:blog
@@ -46,6 +45,20 @@ interface innerRoot{
 interface Root{
    savedBlogs:innerRoot
 }
+
+
+interface user{
+  name:string
+}
+
+interface SavedBlogsArray{
+  blogId:string,
+  userId:string,
+  user:user,
+  blog:blog
+
+}
+
 
 
 
@@ -86,8 +99,9 @@ function SavedBlogs() {
 
     })()
   },[selector.length])
+  console.log(savedBlogs)
   
-  // console.log(selector)
+ 
   if(loading){
      return (
            <div className='h-screen w-screen absolute z-2 bg-white bg-opacity-55  flex justify-center items-center'>
@@ -97,7 +111,10 @@ function SavedBlogs() {
            </div>
            )
   }
-  // console.log(savedBlogs);
+  
+  const username= localStorage.getItem('username')||""
+ 
+  
 
 
   return (
@@ -105,12 +122,19 @@ function SavedBlogs() {
 
     
      
-            <Appbar publish={"saved"} content={''} title={''}/>
+            <Appbar name={username[0]||""} id={''} publish={"saved"} content={''} title={''}/>
           {savedBlogs&&<div  className='mx-auto max-w-2xl'>
             <div className='flex flex-col items-center '>
               <div>  
                 {savedBlogs.map((blog,index)=>{
-                  return <BlogCard savedBlogs={true}  key={index} page={"SingleBlog"} id={blog.blog.id} AvatarName={blog.user.name[0]} name={blog.user?.name} publishDate={blog.blog.date} title={blog.blog.title} content={blog.blog.content} />
+                  return <BlogCard savedBlogs={true}  
+                  key={index} page={"SingleBlog"}
+                   id={blog.blog.id}
+                    AvatarName={blog.blog.author?.name[0]} 
+                    name={blog.blog.author?.name} 
+                    publishDate={blog.blog.date} 
+                    title={blog.blog.title} 
+                    content={blog.blog.content} />
                 })}        
             </div>
             </div>

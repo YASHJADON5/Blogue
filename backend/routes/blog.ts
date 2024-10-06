@@ -218,6 +218,7 @@ blog.get('/blog/bulk',async(c)=>{
 
 
 blog.post('/saveblog',async(c)=>{
+    
     console.log("YAsh")
     const body= await c.req.json();
     const authorId=c.get('userId');
@@ -331,6 +332,8 @@ blog.get('/fetchSavedBlogs',async(c)=>{
                 }
                 
             })
+           
+
             return c.json(blogs)
 
         }
@@ -358,23 +361,39 @@ blog.get('/savedbyuser',async(c)=>{
 
         try{
 
-            const blogs= await prisma.savedBlogs.findMany({
-                where:{
-                    userId:authorId
+            const blogs = await prisma.savedBlogs.findMany({
+                where: {
+                    userId: authorId
                 },
-                 select:{
-                     blog:true,
-                     user:{
-                            select:{
-                                name:true
+                include: {
+                    blog: {
+                        include: {
+                            author: {
+                                select: {
+                                    name: true  
+                                }
                             }
                         }
-                    
-                },
-                
+                    },
+                    user:{
+                        select:{
+                            name:true
+                        }
+                    }
+                }
+            });
 
-                
-            })
+            // if(blogs.length===0){
+            //     let arr=
+            //     c.
+            // }
+            blogs.forEach((blog) => {
+                blog.blog.content = convert(blog.blog.content);              
+            });
+         
+            console.log(blogs)
+
+            
             return c.json(blogs)
 
         }

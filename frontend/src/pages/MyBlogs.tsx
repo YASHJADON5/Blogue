@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Appbar from '../components/General/Appbar'
 import axios from 'axios'
 import spinner from '../assets/spinner.svg'
@@ -77,8 +77,6 @@ function MyBlogs() {
         console.log(response.data)
         
   
-  
-  
       }
       catch(e){
         console.log("error while fetching my blogs",e)
@@ -91,8 +89,7 @@ function MyBlogs() {
     fetchMyBlogs()
     
   },[selector.length])
-  console.log(selector)
-  console.log(selector.length)
+
 
   if(loading){
     return (
@@ -105,12 +102,13 @@ function MyBlogs() {
   }
   console.log(savedpost)
 
+  const username= localStorage.getItem('username')||""
 
 
 
   return (
     <div>
-      <Appbar publish={'regular'} content='' title=''/>
+      <Appbar name={username[0]||""} id={''} publish={'regular'} content='' title=''/>
       {myBlogs&& <div className="mx-auto max-w-2xl">
         
         {myBlogs.Blogs.map((blog,index)=>{

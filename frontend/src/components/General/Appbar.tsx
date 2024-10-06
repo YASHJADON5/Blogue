@@ -1,17 +1,32 @@
 import { useState } from 'react'
 import Avatar from '../Blogs-comp/Avatar'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import spinner from '../../assets/spinner.svg'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { addSingleBlogSaved } from '../../store/savedBlogSlice'
+
+
 
 const base_url= import.meta.env.VITE_BASE_URL
 
+interface username{
+  username:string
+}
 
-function Appbar({publish, content, title, id}:{publish:string|"",content:string|"",title:string|"", id:string|""}) {
+interface user{
+  user:username
+}
+
+
+function Appbar({publish, content, title, id,name }:{publish:string|"",content:string|"",title:string|"", id:string|"",name:string}) {
   
   const[signoutBox,setSignoutBox]= useState(false);
   const navigate= useNavigate()
   const[loading,setLoading]= useState(false);
+  const dispatch= useDispatch()
+  const selector= useSelector((state:user)=>state.user.username)
+
    
   const handlePublish=()=>{
         navigate('/publish');
@@ -20,7 +35,12 @@ function Appbar({publish, content, title, id}:{publish:string|"",content:string|
 
   const handleFinalPublish = async () => {
     console.log("entered")
-    
+
+     
+    if(title===""||content===""){
+      alert("Please fill empty values")
+      return;
+    }
       setLoading(true);  
       try {
         const response = await axios.post(`${base_url}/api/v1/blog`, {
@@ -48,6 +68,7 @@ function Appbar({publish, content, title, id}:{publish:string|"",content:string|
   }
   function handleSignoutCLick(){
     localStorage.removeItem('token')
+    localStorage.removeItem('username')
     navigate('/')
   }
 
@@ -112,6 +133,12 @@ function Appbar({publish, content, title, id}:{publish:string|"",content:string|
     }
 
   }
+
+  const handleBlogueIconClick=()=>{
+    dispatch(addSingleBlogSaved(""))
+    navigate('/blogs')
+    
+  }
   
 
   return (
@@ -123,11 +150,11 @@ function Appbar({publish, content, title, id}:{publish:string|"",content:string|
      </div> }
 
     <div className='flex justify-between p-4 border-b-2 border-slate-300'>
-      <Link to={'/blogs'}>
-        <div className='pl-4 text-lg font-semibold hover:scale-110 transition ease-linear duration-500'>
+     
+        <div onClick={handleBlogueIconClick} className='pl-4 text-lg font-semibold hover:scale-110 transition ease-linear duration-500'>
           Blogue  
         </div> 
-      </Link>
+    
         <div className='flex pr-4 items-center '>
             <div className="flex">
             <div className={`${publish === 'SingleBlogMyBlogs' ? 'hidden' : 'block'}`}>
@@ -142,7 +169,7 @@ function Appbar({publish, content, title, id}:{publish:string|"",content:string|
 
             <div className='mb-2 cursor-pointer' onClick={hnadleclick}>
              
-            <Avatar name={"Y"} hsize='h-10' wsize='w-10'/>
+            <Avatar name={name} hsize='h-10' wsize='w-10'/>
             </div>
             {signoutBox&&
             <div className='h-1/3 w-1/6 bg-[#F5FEFD] absolute mt-16 right-10 rounded-md shadow-xl cursor-pointer '>
