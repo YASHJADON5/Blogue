@@ -5,6 +5,7 @@ import InputBox from '../SigninAnsSignupShared/input-comp/InputBox'
 import axios from 'axios';
 import { addUserName } from '../../store/userSlice';
 import { useDispatch } from 'react-redux';
+import '../../App.css'
 
 
 const base_url = import.meta.env.VITE_BASE_URL;
@@ -41,9 +42,9 @@ function SignupLeft({setLoading}:SignupLeftProps) {
       setErrors((prev)=>{
         return {
             ...prev,
-            nameError:'',
-            emailError:'',
-            passwordError:'' 
+             nameError:'',
+         emailError:'',
+         passwordError:'' 
         }
       })
       setShowError((prev)=>{
@@ -153,15 +154,15 @@ function SignupLeft({setLoading}:SignupLeftProps) {
 
 
   return (
-    <div className='bg-white h-screen '>
+    <div className='bg-custom h-screen '>
            <div className='flex justify-center items-center h-screen '>
                   
                   <div className=' h-96 w-96'>
 
-                        <div className='text-center font-bold text-3xl'>Create an account
+                        <div className='text-center text-white font-bold text-4xl'>Create an account
                         </div>
 
-                        <div className='pt-2 text-center font-medium text-gray-500'>Already have an account? <Link className='underline font-medium' to={'/signin'}>Login</Link>
+                        <div className='pt-2  md:text-lg text-center font-medium text-gray-200'>Already have an account? <Link className='underline font-medium' to={'/signin'}>Login</Link>
                         </div>
                         
                         <InputBox label={'Name'} placeholder={'Jason Roy'} value={signUpInputs.name} onChange={(e)=>{
@@ -186,7 +187,8 @@ function SignupLeft({setLoading}:SignupLeftProps) {
                      });    
                           }
                         }} />
-                         {error.nameError && showError.showNameError&& <div className='text-red-500 text-lg px-8'>{error.nameError}</div>}
+                         {error.nameError && showError.showNameError&& <div className='text-white text-lg px-8'>{error.nameError}</div>}
+                         
                          <InputBox label={'Email'} placeholder={'example@gmail.com'} value={signUpInputs.email} onChange={(e)=>{
                                  setsignUpInputs({
                                   ...signUpInputs,
@@ -210,7 +212,7 @@ function SignupLeft({setLoading}:SignupLeftProps) {
                                }
                                 
                         }} />
-                        {error.emailError &&showError.showEmailError&&<div className='text-red-500 text-lg px-8'>{error.emailError}</div>}
+                        {error.emailError &&showError.showEmailError&&<div className='text-white text-lg px-8'>{error.emailError}</div>}
                          <InputBox label={'Password'} placeholder={'abc@@ABC124'} value={signUpInputs.password} onChange={(e)=>{
                                  setsignUpInputs({
                                   ...signUpInputs,
@@ -233,7 +235,7 @@ function SignupLeft({setLoading}:SignupLeftProps) {
                          });    
                                }
                         }} />
-                         {error.passwordError &&showError.showPasswordError&&<div className='text-red-600 text-lg px-8'>{error.passwordError}</div>}
+                         {error.passwordError &&showError.showPasswordError&&<div className='text-white text-lg px-8'>{error.passwordError}</div>}
                        
                         <div className='px-8'>
                         <button onClick={handleForm} className='bg-[#1F1F1F] text-white  w-full mt-6 p-3 rounded-md hover:bg-black transition ease-in'>Sign Up</button>

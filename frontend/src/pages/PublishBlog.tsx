@@ -25,7 +25,7 @@ function PublishBlog() {
           <input
             ref={inputRef}
             onChange={handleTitleChange}
-            className='w-full mx-auto bg-white outline-none border border-teal-800 p-4 h-20 text-4xl'
+            className='w-full mx-auto bg-white outline-none border border-teal-800 p-2 h-12 md:p-4 md:h-20 text-xl md:text-4xl'
             placeholder='Title'
             type="text"
           />

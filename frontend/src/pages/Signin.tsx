@@ -14,7 +14,7 @@ function Signin() {
   return (
     <div>
         
-        {loading &&<div className='h-screen w-screen absolute z-2 bg-white bg-opacity-55  flex justify-center items-center'>
+        {loading &&<div className='h-screen w-screen absolute z-2 bg-purple-500 bg-opacity-55  flex justify-center items-center'>
                     <div className='z-3'>
                       {<img className='h-36 w-24' src={spinner}/>}
                     </div>
@@ -22,7 +22,8 @@ function Signin() {
         
 
         
-        <div className='grid grid-cols-2 z-1'> 
+        <div className='md:grid md:grid-cols-2 z-1'> 
+        <div className='font-extrabold text-white text-3xl absolute top-6 w-full text-center lg:hidden md:hidden'>Blogue</div>
         <div><SigninLeft setLoading={setLoading} /></div>
         <div className='hidden lg:block'>
         <SigninRight />

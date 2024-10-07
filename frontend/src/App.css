@@ -1,0 +1,6 @@
+
+.bg-custom{
+    background-image: url('./assets/OIP.jpeg');
+    background-size: cover;
+    background-position: center;
+}

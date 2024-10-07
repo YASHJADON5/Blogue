@@ -104,7 +104,7 @@ function SavedBlogs() {
  
   if(loading){
      return (
-           <div className='h-screen w-screen absolute z-2 bg-white bg-opacity-55  flex justify-center items-center'>
+           <div className='h-screen w-screen absolute z-2 bg-purple-700  flex justify-center items-center'>
                     <div className='z-3'>
                       {<img className='h-36 w-24' src={spinner}/>}
                     </div>
@@ -123,9 +123,9 @@ function SavedBlogs() {
     
      
             <Appbar name={username[0]||""} id={''} publish={"saved"} content={''} title={''}/>
-          {savedBlogs&&<div  className='mx-auto max-w-2xl'>
-            <div className='flex flex-col items-center '>
-              <div>  
+          {savedBlogs&&<div  className='mx-auto w-full  md:max-w-2xl'>
+            {/* <div className='flex flex-col items-center '> */}
+             
                 {savedBlogs.map((blog,index)=>{
                   return <BlogCard savedBlogs={true}  
                   key={index} page={"SingleBlog"}
@@ -136,8 +136,8 @@ function SavedBlogs() {
                     title={blog.blog.title} 
                     content={blog.blog.content} />
                 })}        
-            </div>
-            </div>
+           
+            {/* </div> */}
           </div>}
 
 

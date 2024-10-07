@@ -154,15 +154,15 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
 
 
   return (
-    <div className='bg-white h-screen '>
+    <div className='bg-custom h-screen '>
            <div className='flex justify-center items-center h-screen '>
                   
                   <div className=' h-96 w-96'>
 
-                        <div className='text-center font-bold text-3xl'>Create an account
+                        <div className='text-center  text-white font-bold text-4xl'>Create an account
                         </div>
 
-                        <div className='pt-2 text-center font-medium text-gray-500'>Already have an account? <Link className='underline font-medium' to={'/'}>Signup</Link>
+                        <div className='pt-2 text-center md:text-lg font-medium text-gray-200'>Already have an account? <Link className='underline font-medium' to={'/'}>Signup</Link>
                         </div>
                         
                              <InputBox label={'Email'} placeholder={'example@gmail.com'} value={signInInputs.email} onChange={(e)=>{
@@ -188,7 +188,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
                                             }
                                             
                         }} />
-                        {errors.emailError &&showError.showEmailError&&<div className='text-red-500 text-lg px-8'>{errors.emailError}</div>}
+                        {errors.emailError &&showError.showEmailError&&<div className='text-white text-lg px-8'>{errors.emailError}</div>}
                          <InputBox label={'Password'} placeholder={'abc@@ABC124'} value={signInInputs.password} onChange={(e)=>{
                                  setsignInInputs({
                                   ...signInInputs,
@@ -211,7 +211,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
                          });    
                                }
                         }} />
-                         {errors.passwordError &&showError.showPasswordError&&<div className='text-red-600 text-lg px-8'>{errors.passwordError}</div>}
+                         {errors.passwordError &&showError.showPasswordError&&<div className='text-white text-lg px-8'>{errors.passwordError}</div>}
                        
                         <div className='px-8'>
                         <button onClick={handleForm} className='bg-[#1F1F1F] text-white  w-full mt-6 p-3 rounded-md hover:bg-black transition ease-in'>Login</button>

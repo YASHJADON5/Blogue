@@ -90,6 +90,7 @@ function BlogCard({
   const selector= useSelector((state:Root)=>state.savedBlogs.savedBlogs);
   const savedPageSelector= useSelector((state:Root)=>state.savedBlogs.savedPageBlogs);
   const singleBlogSavedSelector= useSelector((state:Root)=>state.savedBlogs.singleBlogSaved);
+  
 
  
   const [loading,setLoading]=useState(false);
@@ -144,7 +145,7 @@ function BlogCard({
 
   if(loading){
     return(
-      <div className='fixed inset-0 z-10 bg-white   flex justify-center items-center'>
+      <div className='fixed inset-0 z-10 bg-purple-700   flex justify-center items-center'>
               <div className='z-20'>
                 {<img className='h-36 w-24' src={spinner}/>}
               </div>
@@ -184,12 +185,12 @@ function BlogCard({
             pathname: `/blog/myblogs/${id}`,
           }}
         >
-          <div className='pt-2 font-bold text-2xl font-sans hover:cursor-pointer'>
+          <div className='break-words pt-2 font-bold text-2xl font-sans hover:cursor-pointer'>
             {title}
           </div>
         </Link>
       )}
-        <div className='text-gray-500 font-lg pt-2'>
+        <div className='text-gray-500 font-lg pt-2 break-words'>
               {page==="SingleBlog"?content:`${content.slice(0,150)}...`}
         </div>
          <div className='flex justify-between'>
@@ -210,12 +211,3 @@ function BlogCard({
 }
 
 export default BlogCard
-
-
-// app.use(
-//   cors({
-//     origin: [process.env.FRONTEND_LOCAL_URL, process.env.FRONTEND_HOSTED_URL],
-//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//     credentials: true, // Allow credentials
-//   })
-// ); this is cors which is in app.js file

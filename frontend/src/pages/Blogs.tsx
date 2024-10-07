@@ -34,8 +34,8 @@ function Blog() {
     
   if(loading){
           return(
-            <div className='h-screen w-screen absolute z-2 bg-white bg-opacity-55  flex justify-center items-center'>
-                    <div className='z-3'>
+            <div className='h-screen w-screen absolute  bg-purple-700  flex justify-center items-center'>
+                    <div className=''>
                       {<img className='h-36 w-24' src={spinner}/>}
                     </div>
            </div>
@@ -48,7 +48,7 @@ function Blog() {
     <div className=''>
     <Appbar name={username[0]||""}  id={""} publish={"regular"} content={''} title={''}/>
     <div className='flex flex-col items-center'>
-      <div className='max-w-xl'>  
+      <div className=' w-full md:w-1/2'>  
        
         {blogs.map((blog,index)=>{
             const isSaved = savedBlogIds.some(saved => saved.blogId === blog.id);

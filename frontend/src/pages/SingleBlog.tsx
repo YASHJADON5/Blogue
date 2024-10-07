@@ -76,7 +76,7 @@ function SingleBlog() {
 
   const [loading, setLoading] = useState(false);
   const selector = useSelector((state: RootState) => state.blogs);
-  const [loadingSavedBlogs, setLoadingSavedBlogs] = useState(false);
+  // const [loadingSavedBlogs, setLoadingSavedBlogs] = useState(false);
   const dispatch= useDispatch()
 
   const { id } = useParams<{ id: string }>();
@@ -162,9 +162,9 @@ function SingleBlog() {
   }
 
 
-  if (loading|| loadingSavedBlogs) {
+  if (loading) {
     return (
-      <div className="h-screen w-screen absolute z-2 bg-white bg-opacity-55 flex justify-center items-center">
+      <div className="h-screen w-screen absolute z-2 bg-purple-700 bg-opacity-80 flex justify-center items-center">
         <div className="z-3">
           <img className="h-36 w-24" src={spinner} />
         </div>
@@ -197,7 +197,7 @@ function SingleBlog() {
 
 
 
-        {!toggleSummary&&blog && !loadingSavedBlogs&&(
+        {!toggleSummary&&blog&&(
           <BlogCard            
             savedBlogs={isSaved}
             AvatarName={blog.author.name[0] || ''}

@@ -52,7 +52,7 @@ function SingleBlogMyBlogs() {
 
   if (loading) {
     return (
-      <div className="h-screen w-screen absolute z-2 bg-white bg-opacity-55 flex justify-center items-center">
+      <div className="h-screen w-screen absolute z-2 bg-purple-700 bg-opacity-80 flex justify-center items-center">
         <div className="z-3">
           <img className="h-36 w-24" src={spinner} />
         </div>
@@ -64,7 +64,7 @@ function SingleBlogMyBlogs() {
 
   return (
     <div>
-      <Appbar name={username||""} id={id||""} publish={"SingleBlogMyBlogs"} title={title} content={content} />
+      <Appbar name={username[0]||""} id={id||""} publish={"SingleBlogMyBlogs"} title={title} content={content} />
       
       <div className='flex justify-center bg-white h-screen max-w-4xl mx-auto'>
         <div className="max-w-full w-full">

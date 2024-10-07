@@ -93,7 +93,7 @@ function MyBlogs() {
 
   if(loading){
     return (
-      <div className='h-screen w-screen absolute z-2 bg-white bg-opacity-55  flex justify-center items-center'>
+      <div className='h-screen w-screen absolute z-2 bg-purple-700  flex justify-center items-center'>
                <div className='z-3'>
                  {<img className='h-36 w-24' src={spinner}/>}
                </div>
