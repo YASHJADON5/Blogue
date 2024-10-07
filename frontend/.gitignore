@@ -14,7 +14,7 @@ dist-ssr
 .env
 savedpostapproach
 _redirects
-
+c
 
 # Editor directories and files
 .vscode/*

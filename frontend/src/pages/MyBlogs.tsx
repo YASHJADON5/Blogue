@@ -6,6 +6,8 @@ import BlogCard from '../components/Blogs-comp/BlogCard'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { addmyBlogsSaved } from '../store/savedBlogSlice'
+import {  useNavigate } from 'react-router-dom'
+
 
 
 const base_url= import.meta.env.VITE_BASE_URL
@@ -58,10 +60,11 @@ function MyBlogs() {
   const [loading,setLoading]= useState(false)
   const [name,setName]= useState<string>("")
   const [savedpost,setSavedPost]= useState<blogId[]|[]>([])
+  const token= localStorage.getItem('token')
+  const navigate=useNavigate()
 
   useEffect(()=>{
     setLoading(true)
-    const token= localStorage.getItem('token')
     const fetchMyBlogs=async()=>{
       try{
         const response= await axios.get(`${base_url}/api/v1/user/myblogs`,{
@@ -74,7 +77,7 @@ function MyBlogs() {
         const savedBlogs = await axios.get(`${base_url}/api/v1/fetchSavedBlogs`, { headers: { "authorization": token } });
         setSavedPost(savedBlogs.data);
         dispatch(addmyBlogsSaved(savedBlogs.data))
-        console.log(response.data)
+        
         
   
       }
@@ -90,6 +93,10 @@ function MyBlogs() {
     
   },[selector.length])
 
+  if(!token){
+    navigate('/signin')
+  }
+
 
   if(loading){
     return (
@@ -100,7 +107,7 @@ function MyBlogs() {
       </div>
       )
   }
-  console.log(savedpost)
+  
 
   const username= localStorage.getItem('username')||""
 

@@ -28,7 +28,7 @@ function Appbar({publish, content, title, id,name }:{publish:string|"",content:s
   
 
   const handleFinalPublish = async () => {
-    console.log("entered")
+  
 
      
     if(title===""||content===""){
@@ -37,7 +37,7 @@ function Appbar({publish, content, title, id,name }:{publish:string|"",content:s
     }
       setLoading(true);  
       try {
-        const response = await axios.post(`${base_url}/api/v1/blog`, {
+         await axios.post(`${base_url}/api/v1/blog`, {
           title: title,
           content: content
         }, {
@@ -46,7 +46,7 @@ function Appbar({publish, content, title, id,name }:{publish:string|"",content:s
           }
         });
   
-        console.log(response.data);
+     
         navigate('/blogs');
       } catch (e) {
         console.log(e);
@@ -81,12 +81,12 @@ function Appbar({publish, content, title, id,name }:{publish:string|"",content:s
        
     try{
 
-      const response= await axios.delete(`${base_url}/api/v1/delete/${id}`,{
+       await axios.delete(`${base_url}/api/v1/delete/${id}`,{
         headers:{
           "authorization":token
         }
       })
-      console.log(response)
+      
       navigate('/myblogs')
 
     }
@@ -106,7 +106,7 @@ function Appbar({publish, content, title, id,name }:{publish:string|"",content:s
        
     try{
 
-      const response= await axios.put(`${base_url}/api/v1/blog`,{
+       await axios.put(`${base_url}/api/v1/blog`,{
         id:id,
         title:title,
         content:content
@@ -115,7 +115,7 @@ function Appbar({publish, content, title, id,name }:{publish:string|"",content:s
           "authorization":token
         }
       })
-      console.log(response)
+      
       navigate(`/myblogs`)
 
     }

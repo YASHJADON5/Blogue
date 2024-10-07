@@ -37,7 +37,7 @@ function useBlogs() : { blogs: Blog[], loading: boolean, savedBlogIds: SavedBlog
 
 
     useEffect(()=>{
-        {console.log("RErendered")}
+        
         (async()=>{
             setLoading(true)
             
@@ -55,7 +55,6 @@ function useBlogs() : { blogs: Blog[], loading: boolean, savedBlogIds: SavedBlog
                
                 setSavedBlogIds(res.data);
                 dispatch(addSavedBlogs(res.data))
-                console.log(res.data);
                 setLoading(false);
 
             }

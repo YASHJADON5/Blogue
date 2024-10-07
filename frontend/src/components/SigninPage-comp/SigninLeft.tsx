@@ -61,7 +61,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
        
 
       if(!signInInputs.email){
-        console.log("a")
+       
                setErrors((preverror)=>{
                 return {
                 ...preverror,
@@ -70,7 +70,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
                })
       }
       if(!signInInputs.password){
-        console.log("s")
+
         setErrors((preverror)=>{
           return {
           ...preverror,
@@ -82,7 +82,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
 
       if(signInInputs.email===''||signInInputs.password===''){
         setLoading(false);
-        console.log(errors, 1)
+        
         return 
       }
    
@@ -91,7 +91,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
       
       if(!result.success){
         
-        console.log(result.error.issues);
+        
         const issues=result.error.issues;
 
         const updatedErrors={
@@ -120,7 +120,7 @@ function SigninLeft({setLoading}:{setLoading:(value:boolean)=>void}) {
                   email:signInInputs.email,
                   password:signInInputs.password         
         })
-        console.log(response);
+        
         localStorage.setItem('token',response.data.jwt);
         setLoading(false)
 

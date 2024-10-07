@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import spinner from '../assets/spinner.svg';
@@ -8,6 +8,8 @@ import BlogCard from '../components/Blogs-comp/BlogCard';
 import { useDispatch } from 'react-redux'
 import { addSingleBlogSaved } from '../store/savedBlogSlice';
 import client  from '../utils/openAi';
+
+
 
 
 const base_url = import.meta.env.VITE_BASE_URL;
@@ -72,11 +74,12 @@ interface Root{
 
 
 function SingleBlog() {
+  const token= localStorage.getItem('token')
   const singleBlogSavedSelector = useSelector((state:Root) => state.savedBlogs.singleBlogSaved);
-
+  const navigate= useNavigate()
   const [loading, setLoading] = useState(false);
   const selector = useSelector((state: RootState) => state.blogs);
-  // const [loadingSavedBlogs, setLoadingSavedBlogs] = useState(false);
+  
   const dispatch= useDispatch()
 
   const { id } = useParams<{ id: string }>();
@@ -87,10 +90,10 @@ function SingleBlog() {
 
 
 
-  console.log("!@@",selector)
+ 
 
   useEffect(() => {
-    console.log("tr")
+  
     if (!selector.blogs) {
       setLoading(true);
       const fetchBlog = async () => {
@@ -129,7 +132,7 @@ function SingleBlog() {
         if(isSaved.length!==0){
           dispatch(addSingleBlogSaved(id))
         }
-        console.log(res.data)
+       
 
         
       }
@@ -159,6 +162,10 @@ function SingleBlog() {
 
     setLoading(false);
 
+  }
+
+  if(!token){
+    navigate('/signin')
   }
 
 

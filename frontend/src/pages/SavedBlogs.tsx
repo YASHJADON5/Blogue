@@ -6,6 +6,8 @@ import Appbar from '../components/General/Appbar'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { addSavedPageBlogs } from '../store/savedBlogSlice'
+import { useNavigate } from 'react-router-dom'
+
 
 
 interface blogId{
@@ -66,11 +68,12 @@ interface SavedBlogsArray{
 const base_url= import.meta.env.VITE_BASE_URL
 
 function SavedBlogs() {
-
+  const navigate=useNavigate()
   const [savedBlogs,setSavedBlogs]= useState<SavedBlogsArray[]>([])
   const [loading,setLoading]= useState(false);
   const dispatch= useDispatch()
   const selector= useSelector((state:Root)=>state.savedBlogs.savedPageBlogs);
+  const token=localStorage.getItem('token')
   
   useEffect(()=>{
     setLoading(true);
@@ -99,8 +102,11 @@ function SavedBlogs() {
 
     })()
   },[selector.length])
-  console.log(savedBlogs)
   
+  if(!token){
+    navigate('/signin')
+  }
+
  
   if(loading){
      return (

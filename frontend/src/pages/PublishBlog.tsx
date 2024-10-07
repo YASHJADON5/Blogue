@@ -1,8 +1,12 @@
 import { useState, useRef } from 'react';
 import RichTextEditor from '../components/RichTextEditor/RichtextEditor';
 import Appbar from '../components/General/Appbar';
+import { useNavigate } from 'react-router-dom';
+
 
 function PublishBlog() {
+  const token= localStorage.getItem('token')
+  const navigate= useNavigate()
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -15,6 +19,10 @@ function PublishBlog() {
   };
   
   const username= localStorage.getItem('username')||""
+  if(!token){
+    navigate('/signin')
+  }
+
 
 
   return (

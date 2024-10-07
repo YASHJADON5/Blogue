@@ -9,7 +9,7 @@ import spinner from '../assets/spinner.svg'
 function Signin() {
   
   const [loading,setLoading]= useState(false);
-  console.log("p-render");
+  
 
   return (
     <div>

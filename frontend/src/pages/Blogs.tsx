@@ -2,6 +2,7 @@ import BlogCard from '../components/Blogs-comp/BlogCard'
 import Appbar from '../components/General/Appbar'
 import useBlogs from '../hooks/useBlogs'
 import spinner from '../assets/spinner.svg'
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -30,6 +31,8 @@ interface SavedBlog {
 
 
 function Blog() {
+  const navigate=useNavigate()
+  const token= localStorage.getItem('token')
   const {blogs,loading, savedBlogIds} : { blogs: Blog[], loading: boolean ,savedBlogIds:SavedBlog[] }= useBlogs();
     
   if(loading){
@@ -42,6 +45,11 @@ function Blog() {
           )
   }
   const username= localStorage.getItem('username')||""
+
+  if(!token){
+    navigate('/signin')
+  }
+
 
 
   return (

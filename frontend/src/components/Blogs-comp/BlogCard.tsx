@@ -13,8 +13,8 @@ import { addmyBlogsSaved, addSavedBlogs, addSavedPageBlogs ,addSingleBlogSaved }
 
 
 
-const base_url= import.meta.env.VITE_BASE_URL
-console.log(base_url)
+
+
 
 
 
@@ -103,7 +103,7 @@ function BlogCard({
     const arr=[...selector]
     if (arr.some(blog => blog.blogId === id)) return;
     arr.push({blogId:id});
-    console.log(arr)
+  
 
     if(!singleBlogSavedSelector&&page==='SingleBlog'){
       dispatch(addSingleBlogSaved(id))

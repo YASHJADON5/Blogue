@@ -1,15 +1,17 @@
 import  { useState,useRef, useEffect,  } from 'react'
 import Appbar from '../components/General/Appbar'
 import RichTextEditor from '../components/RichTextEditor/RichtextEditor'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import spinner from '../assets/spinner.svg'
+
 
 const base_url= import.meta.env.VITE_BASE_URL
 
 
 function SingleBlogMyBlogs() {
-  
+  const token= localStorage.getItem('token')
+  const navigate=useNavigate()
   const [loading,setLoading]= useState(false)
   const {id}=useParams<{ id: string }>()
 
@@ -48,6 +50,10 @@ function SingleBlogMyBlogs() {
         
     })()
   },[])
+
+  if(!token){
+    navigate('/signin')
+  }
 
 
   if (loading) {

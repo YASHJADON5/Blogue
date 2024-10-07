@@ -75,7 +75,7 @@ function SignupLeft({setLoading}:SignupLeftProps) {
                })
       }
       if(!signUpInputs.password){
-        console.log("s")
+       
         setErrors((preverror)=>{
           return {
           ...preverror,
@@ -94,8 +94,8 @@ function SignupLeft({setLoading}:SignupLeftProps) {
       const result= signUpBody.safeParse(signUpInputs);
       
       if(!result.success){
-        console.log("input data is errounous")
-        console.log(result.error.issues);
+       
+        
         const issues=result.error.issues;
 
         const updatedErrors={
@@ -128,7 +128,7 @@ function SignupLeft({setLoading}:SignupLeftProps) {
                   email:signUpInputs.email,
                   password:signUpInputs.password         
         })
-        console.log(response);
+        
         localStorage.setItem('token',response.data.jwt);
 
         localStorage.setItem('username',response.data.name)

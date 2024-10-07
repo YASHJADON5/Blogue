@@ -19,7 +19,7 @@ export default async function handleSave({
    
 
     try {
-        const response = await axios.post(`${base_url}/api/v1/saveblog`, {
+       await axios.post(`${base_url}/api/v1/saveblog`, {
             id: id,
         }, {
             headers: {
@@ -27,7 +27,7 @@ export default async function handleSave({
             },
         });
 
-        console.log(response);
+       
 
     } catch (e) {
         console.error("Error while saving blog from frontend", e); 
